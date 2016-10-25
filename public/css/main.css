@@ -85,6 +85,10 @@ body {
     color: #3b5998;
 }
 
+.email-link a:hover {
+    color: #3b5998;
+}
+
 .linkedin-link a:hover {
     color: #007fb1;
 }

@@ -1,0 +1,11 @@
+How to run this website:
+    1. Open the main folder in a Visual Studio Code (free tool)
+    2. Press ctrl + ` (key near the top left of keyboard). This will bring up an integrated terminal.
+    3. Type in "node server.js" in the terminal. This will start up the server and tell you which port it started up on (default is 3000)
+    4. In your browser, navigate to localhost:3000 to access the website.
+    5. After making changes just re-load the page. If you change the server code you will need to restart the server in the intergrated terminal.
+
+How to add a directive or any other js file:
+    1. Add the file
+    2. Go to the bottom of index.html and be sure to add the new file as a script, or else it won't work.
+

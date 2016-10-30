@@ -3,7 +3,7 @@ angular.module('vaqoApp')
     return{
         restrict:'E',
         transclude:true,
-        template:'<p>This is the Convert tab.</p>',
+        templateUrl:'../partials/convertTemplate.html',
         scope: {},
         link:function(scope,elem,attr){}
     }

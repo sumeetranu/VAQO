@@ -3,7 +3,7 @@ angular.module('vaqoApp')
     return{
         restrict:'E',
         transclude:true,
-        template:'<p>This is the Optimize tab.</p>',
+        templateUrl:'../partials/optimizeTemplate.html',
         scope: {},
         link:function(scope,elem,attr){}
     }

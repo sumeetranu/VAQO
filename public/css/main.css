@@ -54,7 +54,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-compact {
     padding:0;
-    padding-right:4px;
+    padding-right:0px;
     background-color:transparent;
 }
 
@@ -68,7 +68,7 @@ h1, h2, h3, h4, h5, h6 {
 .toolbar {
     border: 1px solid #3D5273;
     background-color:#3D5273;
-    height:30px;
+    height:auto;
     width:100%;
     padding-left:5px;
     color:white;
@@ -86,6 +86,14 @@ h1, h2, h3, h4, h5, h6 {
 .btn-red {
     border-radius:0px;
     border-color:#6F0000;
+    background:#6F0000;
+    color:white;
+}
+
+.btn-red:hover {
+    border-radius:0px;
+    border-color:#6F0000;
+    background:white;
     color:#6F0000;
 }
 

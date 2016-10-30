@@ -3,7 +3,7 @@ angular.module('vaqoApp')
     return{
         restrict:'E',
         transclude:true,
-        template:'<p>This is the Run tab.</p>',
+        templateUrl:'../partials/runTemplate.html',
         scope: {},
         link:function(scope,elem,attr){}
     }

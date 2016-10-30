@@ -32,10 +32,17 @@ body {
     margin-top: 15px;
 }
 
+a {
+    color:#6F0000;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #6F0000;
+}
+
 /* Tabs */
 #workspaceTabs .tab-content {
-  color : white;
-  background-color: #428bca;
+  border : 1px solid #6F0000;
   padding : 5px 15px;
 }
 
@@ -43,6 +50,67 @@ body {
   border-radius: 0;
 }
 
+/* General elements */
+
+.btn-compact {
+    padding:0;
+    padding-right:4px;
+    background-color:transparent;
+}
+
+.box {
+    border: 1px solid #3D5273;
+    background-color:white;
+    height:250px;
+    width:100%;
+}
+
+.toolbar {
+    border: 1px solid #3D5273;
+    background-color:#3D5273;
+    height:30px;
+    width:100%;
+    padding-left:5px;
+    color:white;
+}
+
+.muted {
+    color: dimgray;
+}
+
+.no-space {
+    margin:0;
+    padding-bottom:0px;
+}
+
+.btn-red {
+    border-radius:0px;
+    border-color:#6F0000;
+    color:#6F0000;
+}
+
+.red-text {
+    color:#6F0000;
+}
+
+/* Database tables*/
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+}
+
+tr:nth-child(even){background-color:lightgray; color:black}
+
+tr:nth-child(odd){background-color: darkgray; color:black}
+
+th {
+    background-color: #3D5273;
+    color: white;
+}
 
 /* Page Sections */
 .section,
@@ -150,4 +218,14 @@ footer {
         height: 70%;
         /* increases the carousel height so it looks good on phones */
     }
+}
+
+
+.nav-pills > .active > a, .nav-pills > .active > a:hover {
+    background-color: #6F0000 !important;
+    color:white !important;
+}
+
+.nav-pills > li > a {
+    color: #6F0000 !important;
 }

@@ -21,6 +21,9 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.17.0/vis.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.17.0/vis.min.css">
+
     <!-- Our Website CSS Styles -->
     <link rel="stylesheet" href="css/main.css">
 
@@ -33,7 +36,7 @@
 
 <!-- Our Website Content Goes Here -->
 <div ng-include='"templates/header.html"'></div>
-<div ng-view></div>
+<div ng-view style="height:100%"></div>
 <div ng-include='"templates/footer.html"'></div>
 
 <!-- Vendor: Javascripts -->

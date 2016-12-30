@@ -237,3 +237,88 @@ footer {
 .nav-pills > li > a {
     color: #6F0000 !important;
 }
+
+.CodeMirror {
+    border:1px solid #eee;
+    height:100% !important;
+}
+
+.codearea {
+  position: absolute;
+  width: 99%;
+  height: 85%;
+  background-color: #34495e;
+  color: white;
+  border-style: none;
+  border-color: Transparent;
+  overflow: auto;
+  font-size: 1.5em;
+}
+
+div.vis-network div.vis-navigation div.vis-button {
+    width:30px;
+    height:30px;
+    position:absolute;
+    display:inline-block;
+    background-position: 0px 0px;
+    background-repeat:no-repeat;
+    cursor: pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+div.vis-network div.vis-navigation div.vis-button:hover {
+    box-shadow: 0 0 3px 3px rgba(111, 0, 0, 0.30);
+}
+
+/*div.vis-network div.vis-navigation div.vis-button:active {
+    box-shadow: 0 0 1px 3px rgba(56, 207, 21, 0.95);
+}*/
+
+div.vis-network div.vis-navigation div.vis-button.vis-up {
+    background-image: url("../images/up.png");
+    background-size:cover;
+    bottom:90px;
+    left:55px;
+    display:none;
+}
+div.vis-network div.vis-navigation div.vis-button.vis-down {
+    background-image: url("../images/down.png");
+    background-size:cover;
+    bottom:10px;
+    left:55px;
+    display:none;
+}
+div.vis-network div.vis-navigation div.vis-button.vis-left {
+    background-image: url("../images/left.png");
+    background-size:cover;
+    bottom:50px;
+    left:15px;
+    display:none;
+}
+div.vis-network div.vis-navigation div.vis-button.vis-right {
+    background-image: url("../images/right.png");
+    background-size:cover;
+    bottom:50px;
+    left:95px;
+    display:none;
+}
+
+div.vis-network div.vis-navigation div.vis-button.vis-zoomIn {
+    display:none;
+}
+div.vis-network div.vis-navigation div.vis-button.vis-zoomOut {
+    display:none;
+}
+div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
+    background-image: url("../images/fit.png");
+    background-size:cover;
+    /*bottom:50px;
+    left:55px;*/
+    bottom:10px;
+    left:10px;
+}

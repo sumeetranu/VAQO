@@ -204,12 +204,12 @@
             <script type="text/javascript">
                 // create an array with nodes
                 var nodes = new vis.DataSet([
-                    {id: 1, label: 'Node 1'},
-                    {id: 2, label: 'Node 2'},
-                    {id: 3, label: 'Node 3'},
-                    {id: 4, label: 'Node 4'},
-                    {id: 5, label: 'Node 5'},
-                    {id: 6, label: 'Node 6'}
+                    {id: 1, label: 'Node 1', title: 'Node 1'},
+                    {id: 2, label: 'Node 2', title: 'Node 2'},
+                    {id: 3, label: 'Node 3', title: 'Node 3'},
+                    {id: 4, label: 'Node 4', title: 'Node 4'},
+                    {id: 5, label: 'Node 5', title: 'Node 5'},
+                    {id: 6, label: 'Node 6', title: 'Node 6'}
                 ]);
 
                 // create an array with edges
@@ -218,7 +218,7 @@
                     {from: 1, to: 2},
                     {from: 2, to: 4},
                     {from: 2, to: 5},
-                    {from: 2, to: 6},
+                    {from: 2, to: 6}
                 ]);
 
                 // create a network
@@ -231,12 +231,8 @@
                     nodes: {
                         color:{background:'#3D5273'},
                         font:{color:'white'},
-                        icon: {
-                            face: 'FontAwesome',
-                            code: undefined,
-                            size: 50,  //50,
-                            color:'#2B7CE9'
-                        }
+                        shape:'box',
+                        font:{size:18, color:'white'}
                     },
                     layout: {
                         hierarchical: {

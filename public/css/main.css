@@ -65,6 +65,11 @@ h1, h2, h3, h4, h5, h6 {
     width:100%;
 }
 
+.hiddenBox {
+    height:250px;
+    width:100%;
+}
+
 .toolbar {
     border: 1px solid #3D5273;
     background-color:#3D5273;
@@ -319,6 +324,6 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
     background-size:cover;
     /*bottom:50px;
     left:55px;*/
-    bottom:10px;
-    left:10px;
+    top:10px;
+    right:10px;
 }

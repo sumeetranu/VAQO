@@ -14,16 +14,16 @@ var dbVal;
 function getInfo(){
 	hostVal = 'localhost';
 	userVal = 'root';
-	password = 'CBdnSR5!';
-	database = 'mySample';
+	password = 'password';
+	database = 'test';
 };
 
 //Establish the connection
 var dbConnection = mySQL.createConnection({
 	host: 'localhost',
 	user: 'root',
-	password: 'CBdnSR5!',
-	database: 'mySample',
+	password: 'password',
+	database: 'test',
 	port: 3306
 });
 
@@ -37,7 +37,7 @@ dbConnection.connect(function(error) {
 });
 
 //Initial querying.
-dbConnection.query("SELECT * FROM testsample", function(error, rows, fields){
+dbConnection.query("SELECT * FROM new_table", function(error, rows, fields){
 	//callback
 	if(error){
 		console.log('Error in query!');

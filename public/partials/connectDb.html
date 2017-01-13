@@ -1,6 +1,64 @@
-<div class="section">
-
     <div class="container">
-		<div>Connect DB </div>
+		<div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Connect External Database</h1>
+            
+            <ol class="breadcrumb">
+                <li><a href="../index.html">Home</a>
+                </li>
+                <li class="active">Connect External Database</li>
+            </ol>
+    		</div>
+		</div>
+		<div class="row">
+			<form name="connectDbForm" class="form-horizontal" data-toggle="validator">
+				<fieldset>			
+				<!-- Text input-->
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="textinput">Host</label>  
+					<div class="col-md-4">
+					<input id="hostInput" name="hostInput" ng-model="connectDbForm.hostInput" placeholder="host" class="form-control input-md" required="required" type="text">
+						
+					</div>
+				</div>
+
+				<!-- Text input-->
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="textinput">Port</label>  
+					<div class="col-md-4">
+					<input id="portInput" name="portInput" placeholder="port" class="form-control input-md" required="true" type="text">
+						
+					</div>
+				</div>
+
+				<!-- Text input-->
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="textinput">User</label>  
+					<div class="col-md-4">
+					<input id="usernameInput" name="usernameInput" ng-model="connectDbForm.usernameInput" placeholder="username" class="form-control input-md" required="true" type="text">
+						
+					</div>
+				</div>
+
+				<!-- Password input-->
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="passwordinput">Password</label>
+					<div class="col-md-4">
+						<input id="passwordInput" name="passwordInput" placeholder="password" class="form-control input-md" required="true" type="password">
+						
+					</div>
+				</div>
+
+				<!-- Button -->
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="singlebutton"></label>
+					<div class="col-md-4">
+						<a href="/#/workspace">
+							<button id="singlebutton" name="singlebutton" class="btn btn-default">Connect</button>
+						</a>
+					</div>
+				</div>
+
+				</fieldset>
+			</form>
 	</div>
-</div>		

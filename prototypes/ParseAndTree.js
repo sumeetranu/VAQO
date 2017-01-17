@@ -1,4 +1,5 @@
-var TypeEnum = {"Pi":1, "Sigma":2, "Rho":3, "NJoin":4, "Data":5}
+var TypeEnum = {"Pi":0, "Sigma":1, "Rho":2, "NJoin":3, "Data":4}
+var Types = ["\u03C0", "\u03C3", "\u03C1", "\u2A1D", "Data"]
 
 function Node(type, val)
 {
@@ -74,7 +75,7 @@ function parseNJoin(str)
     right = spl[1];
 
 
-    var node = new Node(TypeEnum.NJoin, "⨝");
+    var node = new Node(TypeEnum.NJoin, "");
     var subTreeLeft = createTree(left);
     var subTreeRight = createTree(right);
 
@@ -88,17 +89,17 @@ function parseNJoin(str)
 
 function createTree(q)
 {
-    if (q.startsWith("π ") || q.startsWith("pi "))
+    if (q.startsWith("\u03C0 ") || q.startsWith("pi "))
     {
         newq = q.substring(q.indexOf(" ") + 1);
         return parseProject(newq);
     }
-    else if (q.startsWith("σ ") || q.startsWith("sigma "))
+    else if (q.startsWith("\u03C3 ") || q.startsWith("sigma "))
     {
         newq = q.substring(q.indexOf(" ") + 1);
         return parseSelect(newq);
     }
-    else if (q.startsWith("⨝") || q.startsWith("njoin"))
+    else if (q.startsWith("\u2A1D") || q.startsWith("njoin"))
     {
         newq = q.substring(q.indexOf("(") + 1, q.lastIndexOf(")"));
         return parseNJoin(newq);
@@ -110,12 +111,105 @@ function createTree(q)
     }
 }
 
-query = "\t \n  π a, c (\n    σ a < 3 (\n        ⨝(R,S)\n    )\n)"
-newq = query.replace(/[^\x21-\x7Eπσ⨝]+/g, ' ');
+/*Id: unique identifier
+Label: to be displayed inside the box for each node
+Title: shows up when you hover on a node*/
+
+function GraphNode(Id, Label, Title)
+{
+    this.id = Id;
+    this.label = Label;
+    this.title = Title;
+}
+
+function Edge(From, To)
+{
+	this.from = From;
+	this.to = To;
+}
+
+function TreeToGraphRun(n)
+{
+	var arr = TreeToGraph(n, 0, [], []);
+	return [arr[0], arr[1]];
+}
+
+function TreeToGraph(n, id, nodes, edges)
+{
+	
+	if (n.type == TypeEnum["Data"])
+	{
+		var gnode = new GraphNode(id, n.value, "");
+	}
+	else
+	{
+		var gnode = new GraphNode(id, Types[n.type], n.value);
+	}
+	nodes.push(gnode);
+	var curid = id;
+	var i = 0;
+	while(i < n.children.length)
+	{
+		id++;
+		var edge = new Edge(curid, id);
+		edges.push(edge);
+		var arr = TreeToGraph(n.children[i], id, nodes, edges);
+		nodes = arr[0]
+		edges = arr[1];
+		id = arr[2];
+		i++;
+	}
+	return [nodes, edges, id];
+}
+
+/*
+pi a, c (
+	sigma a < 4 (
+		(pi a,c (sigma a < 5 (R))) njoin S
+	)
+)
+*/
+
+query = "\t \n  \u03C0 a, c (\n    \u03C3 a < 3 (\n        \u2A1D(pi a,b,c (sigma a < 5 (R)),S)\n    )\n)"
+newq = query.replace(/[^\x21-\x7E\u03C0\u03C3\u2A1D]+/g, ' ');
 newq = newq.replace(/^\s+|\s+$/g, '').trim();
 var a = [];
 a.push(1);
 //window.alert(query);
 //window.alert(newq);
 var tree = createTree(newq);
-var a = splitOnComma("((3), 123 (4)), ( 3 2, (1 (2)))")
+var a = TreeToGraphRun(tree);
+
+var nodes = new vis.DataSet(a[0]);
+var edges = new vis.DataSet(a[1]);
+
+// create a network
+var container = document.getElementById('mynetwork');
+var data = {
+nodes: nodes,
+edges: edges
+};
+var options = {
+	nodes: {
+		color:{background:'#3D5273'},
+		shape:'box',
+		font:{size:18, color:'white'}
+	},
+	layout: {
+		hierarchical: {
+			direction: "UD",
+			sortMethod: "directed"
+		}
+	},
+	interaction: {
+		dragNodes :false,
+		navigationButtons:true,
+		keyboard:true
+	},
+	physics: {
+		enabled: false
+	}
+};
+var network = new vis.Network(container, data, options);
+
+var a = 0;

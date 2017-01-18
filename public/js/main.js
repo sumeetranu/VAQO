@@ -33,7 +33,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider) {
 /**
  * Controls all other Pages
  */
-app.controller('PageCtrl', function (/* $scope, $location, $http */) {
+app.controller('PageCtrl', function ($scope/*, $location, $http */) {
   console.log("Page Controller loaded.");
   // Activates the Carousel
   $('.carousel').carousel({
@@ -45,6 +45,8 @@ app.controller('PageCtrl', function (/* $scope, $location, $http */) {
     selector: "a[data-toggle=tooltip]"
   });
 
-  console.log(connectDbForm.usernameInput);
+  console.log($scope);
+  console.log($scope.connectDbForm);
+  console.log(this);
 
 });

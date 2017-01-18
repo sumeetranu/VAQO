@@ -44,6 +44,9 @@ dbConnection.query("SELECT * FROM new_table", function(error, rows, fields){
 	} else {
 		console.log('Success!\n');
 		console.log(rows);
+		rows.forEach(function(row){
+			console.log('Id: ', row.idnew_table, ' Name: ', row.name);
+		});
 	}
 });
 dbConnection.end();

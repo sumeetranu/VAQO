@@ -23,7 +23,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider) {
     .when("/contact", {templateUrl: "partials/contact.html", controller: "PageCtrl"})
     .when("/testDb", {templateUrl: "partials/testDb.html", controller: "PageCtrl"})
 
-    .when("/connectDb", {templateUrl: "partials/connectDb.html", controller: "PageCtrl"})
+    .when("/connectDb", {templateUrl: "partials/connectDb.html", controller: "ConnectDbCtrl"})
     .when("/workspace", {templateUrl: "partials/workspace.html", controller: "PageCtrl"})
 
     // else 404
@@ -45,8 +45,21 @@ app.controller('PageCtrl', function ($scope/*, $location, $http */) {
     selector: "a[data-toggle=tooltip]"
   });
 
-  console.log($scope);
-  console.log($scope.connectDbForm);
-  console.log(this);
+});
 
+app.controller('ConnectDbCtrl', function ($scope/*, $location, $http */) {
+  console.log('Connect Database Controller loaded.');
+
+  $scope.usernameInput = '';
+  $scope.passwordInput = '';
+  $scope.hostInput = '';
+  $scope.hostInput = '';
+
+  // Function that connects the user's DB using the credential supplied
+  $scope.connectDatabase = function(){
+    console.log('Username:', $scope.usernameInput);
+    console.log('Password:', $scope.passwordInput);
+    console.log('Host:', $scope.hostInput);
+    console.log('Port:', $scope.portInput);
+  };
 });

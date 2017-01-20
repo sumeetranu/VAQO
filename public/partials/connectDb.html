@@ -26,7 +26,7 @@
 				<div class="form-group">
 					<label class="col-md-4 control-label" for="textinput">Port</label>  
 					<div class="col-md-4">
-					<input id="portInput" name="portInput" placeholder="port" class="form-control input-md" required="true" type="text">
+					<input id="portInput" name="portInput" ng-model="portInput" placeholder="port" class="form-control input-md" required="true" type="text">
 						
 					</div>
 				</div>
@@ -35,7 +35,7 @@
 				<div class="form-group">
 					<label class="col-md-4 control-label" for="textinput">User</label>  
 					<div class="col-md-4">
-						<input id="usernameInput" name="usernameInput" ng-model="connectDbForm.usernameInput" placeholder="username" class="form-control input-md" required="true" type="text">
+						<input id="usernameInput" name="usernameInput" ng-model="usernameInput" placeholder="username" class="form-control input-md" required="true" type="text">
 						
 					</div>
 				</div>
@@ -44,7 +44,7 @@
 				<div class="form-group">
 					<label class="col-md-4 control-label" for="passwordinput">Password</label>
 					<div class="col-md-4">
-						<input id="passwordInput" name="passwordInput" placeholder="password" class="form-control input-md" required="true" type="password">
+						<input id="passwordInput" name="passwordInput" ng-model="passwordInput" placeholder="password" class="form-control input-md" required="true" type="password">
 						
 					</div>
 				</div>
@@ -53,9 +53,7 @@
 				<div class="form-group">
 					<label class="col-md-4 control-label" for="singlebutton"></label>
 					<div class="col-md-4">
-						<a href="/#/workspace">
-							<button id="singlebutton" name="singlebutton" class="btn btn-default">Connect</button>
-						</a>
+						<button id="singlebutton" name="singlebutton" class="btn btn-default" ng-click="connectDatabase()">Connect</button>
 					</div>
 				</div>
 

@@ -33,35 +33,39 @@
     <!-- Font Awesome -->
     <script src="https://use.fontawesome.com/7e6778ac82.js"></script>
 
+    <!-- NgTable -->
+    <link rel="stylesheet"; href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+    <script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
+
     <!-- Our Website CSS Styles -->
     <link rel="stylesheet" href="css/main.css">
 
 </head>
-<body ng-app="vaqoApp">
-<!--[if lt IE 7]>
-<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
-    your browser</a> to improve your experience.</p>
-<![endif]-->
+<body>
+    <html ng-app="vaqoApp">
+        
+    </html>    
+    
 
-<!-- Our Website Content Goes Here -->
-<div ng-include='"templates/header.html"'></div>
-<div ng-view style="height:85%"></div>
-<div ng-include='"templates/footer.html"'></div>
+    <!-- Our Website Content Goes Here -->
+    <div ng-include='"templates/header.html"'></div>
+    <div ng-view style="height:85%"></div>
+    <div ng-include='"templates/footer.html"'></div>
 
-<!-- Vendor: Javascripts -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <!-- Vendor: Javascripts -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
-<!-- Vendor: Angular, followed by our custom Javascripts -->
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular-route.min.js"></script>
+    <!-- Vendor: Angular, followed by our custom Javascripts -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular-route.min.js"></script>
 
-<!-- Our Website Javascripts -->
-<script src="js/main.js"></script>
-<script src="js/runDirective.js"></script>
-<script src="js/convertDirective.js"></script>
-<script src="js/optimizeDirective.js"></script>
-<script src="js/connectDB.js"></script>
+    <!-- Our Website Javascripts -->
+    <script src="js/main.js"></script>
+    <script src="js/runDirective.js"></script>
+    <script src="js/convertDirective.js"></script>
+    <script src="js/optimizeDirective.js"></script>
+    <script src="js/connectDB.js"></script>
 
 </body>
 </html>

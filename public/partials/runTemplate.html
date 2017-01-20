@@ -169,33 +169,15 @@
     <h4 style="text-align:center; height:5%" class="red-text">Results</h4>
         <!--<p style="vertical-align:center">Run a query to see the results.</p>-->
 
-        <table style="height:20% !important">
-            <tr>
-                <th>Attr1</th>
-                <th>Attr2</th>
-                <th>Attr3</th>
-            </tr>
-            <tr>
-                <td>Value</td>
-                <td>Value</td>
-                <td>Value</td>
-            </tr>
-            <tr>
-                <td>Value</td>
-                <td>Value</td>
-                <td>Value</td>
-            </tr>
-            <tr>
-                <td>Value</td>
-                <td>Value</td>
-                <td>Value</td>
-            </tr>
-            <tr>
-                <td>Value</td>
-                <td>Value</td>
-                <td>Value</td>
+        <table ng-table="vm.tableParams" class="table" show-filter="true" style="height:20% !important">
+            <tr ng-repeat = "message in run.messages">
+                <td title="'Text'" filter="{text:'text'}" sortable="'text'">{{message.text}}</td>
+                <td title="'Value'" filter="{val:'text'}" sortable="'val'">{{message.val}}</td>
+
             </tr>
         </table>
+
+        
         
         <br>
 

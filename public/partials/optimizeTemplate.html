@@ -163,7 +163,7 @@
 
 
     <br>
-    <div style="text-align:right"><button class="btn btn-red"><i class="fa fa-play">Optimize</i></button></div>
+    <div style="text-align:right"><button class="btn btn-red" ng-click="optimize.optimizeQuery()"><i class="fa fa-play">Optimize</i></button></div>
     <br>
 </div>
 
@@ -173,72 +173,18 @@
         <!--<p style="vertical-align:center">Run a query to see the results.</p>-->
 
         <strong>Optimized query</strong>
-        <p>Optimized query string will go here.</p>
+        <p ng-bind="optimize.optimizedQueryString"></p>
         
         <br>
 
         <div style="height:120px; width:45%; float:left">
             <strong>Original tree</strong>
             <div class="hiddenBox">
-                <div id="originalNetwork" style="height:100% !important"></div>
+            <div ng-show="optimize.showGraphs" id="originalNetwork" style="height:100% !important"></div>
             <script type="text/javascript">
-                // create an array with nodes
-                var nodes = new vis.DataSet([
-                    {id: 1, label: 'Node 1', title: 'Node 1'},
-                    {id: 2, label: 'Node 2', title: 'Node 2'},
-                    {id: 3, label: 'Node 3', title: 'Node 3'},
-                    {id: 4, label: 'Node 4', title: 'Node 4'},
-                    {id: 5, label: 'Node 5', title: 'Node 5'},
-                    {id: 6, label: 'Node 6', title: 'Node 6'}
-                ]);
-
-                // create an array with edges
-                var edges = new vis.DataSet([
-                    {from: 1, to: 3},
-                    {from: 1, to: 2},
-                    {from: 2, to: 4},
-                    {from: 2, to: 5},
-                    {from: 2, to: 6},
-                ]);
-
-                // create a network
-                var container = document.getElementById('originalNetwork');
-                var data = {
-                    nodes: nodes,
-                    edges: edges
-                };
-                var options = {
-                    nodes: {
-                        color:{background:'#3D5273'},
-                        shape:'box',
-                        font:{size:18, color:'white'}
-                    },
-                    layout: {
-                        hierarchical: {
-                            direction: "UD",
-                            sortMethod: "directed"
-                        }
-                    },
-                    interaction: {
-                        dragNodes :false,
-                        navigationButtons:true,
-                        keyboard:true
-                    },
-                    physics: {
-                        enabled: false
-                    }//,
-                    // configure: {
-                    //     filter: function (option, path) {
-                    //         if (path.indexOf('hierarchical') !== -1) {
-                    //             return true;
-                    //         }
-                    //         return false;
-                    //     },
-                    //     showButton:false
-                    // }
-                };
-                var network = new vis.Network(container, data, options);
-                window.onload = function() {network.fit();}
+                var originalContainer = document.getElementById('originalNetwork');
+                var originalNetwork = new vis.Network(originalContainer, optimize.originalData, optimize.options);
+                //window.onload = function() {network.fit();}
             </script>
             </div>
         </div>
@@ -246,64 +192,11 @@
         <div style="height:120px; width:45%; float:right">
             <strong>Optimized tree</strong>
             <div class="hiddenBox">
-                <div id="optimizedNetwork" style="height:100% !important"></div>
+            <div ng-show="optimize.showGraphs" id="optimizedNetwork" style="height:100% !important"></div>
             <script type="text/javascript">
-                // create an array with nodes
-                var nodes = new vis.DataSet([
-                    {id: 1, label: 'Node 1', title: 'Node 1'},
-                    {id: 2, label: 'Node 2', title: 'Node 2'},
-                    {id: 3, label: 'Node 3', title: 'Node 3'},
-                    {id: 4, label: 'Node 4', title: 'Node 4'},
-                    {id: 5, label: 'Node 5', title: 'Node 5'},
-                    {id: 6, label: 'Node 6', title: 'Node 6'}
-                ]);
-
-                // create an array with edges
-                var edges = new vis.DataSet([
-                    {from: 1, to: 3},
-                    {from: 1, to: 2},
-                    {from: 2, to: 4},
-                    {from: 2, to: 5},
-                    {from: 2, to: 6},
-                ]);
-
-                // create a network
-                var container = document.getElementById('optimizedNetwork');
-                var data = {
-                    nodes: nodes,
-                    edges: edges
-                };
-                var options = {
-                    nodes: {
-                        color:{background:'#3D5273'},
-                        shape:'box',
-                        font:{size:18, color:'white'}
-                    },
-                    layout: {
-                        hierarchical: {
-                            direction: "UD",
-                            sortMethod: "directed"
-                        }
-                    },
-                    interaction: {
-                        dragNodes :false,
-                        navigationButtons:true,
-                        keyboard:true
-                    },
-                    physics: {
-                        enabled: false
-                    }//,
-                    // configure: {
-                    //     filter: function (option, path) {
-                    //         if (path.indexOf('hierarchical') !== -1) {
-                    //             return true;
-                    //         }
-                    //         return false;
-                    //     },
-                    //     showButton:false
-                    // }
-                };
-                var network = new vis.Network(container, data, options);
+                var optimizedContainer = document.getElementById('optimizedNetwork');
+                var optimizedNetwork = new vis.Network(optimizedContainer, optimize.optimizedData, optimize.options);
+                //window.onload = function() {network.fit();}
             </script>
             </div>
         </div>

@@ -161,86 +161,28 @@
         </script>
     </div>
     <br>
-    <div style="text-align:right"><button class="btn btn-red"><i class="fa fa-play">Run</i></button></div>
+    <div style="text-align:right"><button class="btn btn-red" ng-click="run.runQuery()"><i class="fa fa-play">Run</i></button></div>
     <br>
 </div>
 
 <div class="col-sm-6" style="height:100%">
     <h4 style="text-align:center; height:5%" class="red-text">Results</h4>
         <!--<p style="vertical-align:center">Run a query to see the results.</p>-->
-
+        <p ng-if="!run.showGraph">Run a query to view results.</p>
         <table ng-table="vm.tableParams" class="table" show-filter="true" style="height:20% !important">
             <tr ng-repeat = "message in run.messages">
                 <td title="'Text'" filter="{text:'text'}" sortable="'text'">{{message.text}}</td>
                 <td title="'Value'" filter="{val:'text'}" sortable="'val'">{{message.val}}</td>
-
             </tr>
         </table>
 
-        
-        
         <br>
 
-        
-            <div id="mynetwork" style="height:60% !important"></div>
-            <script type="text/javascript">
-                // create an array with nodes
-                var nodes = new vis.DataSet([
-                    {id: 1, label: 'Node 1', title: 'Node 1'},
-                    {id: 2, label: 'Node 2', title: 'Node 2'},
-                    {id: 3, label: 'Node 3', title: 'Node 3'},
-                    {id: 4, label: 'Node 4', title: 'Node 4'},
-                    {id: 5, label: 'Node 5', title: 'Node 5'},
-                    {id: 6, label: 'Node 6', title: 'Node 6'}
-                ]);
-
-                // create an array with edges
-                var edges = new vis.DataSet([
-                    {from: 1, to: 3},
-                    {from: 1, to: 2},
-                    {from: 2, to: 4},
-                    {from: 2, to: 5},
-                    {from: 2, to: 6}
-                ]);
-
-                // create a network
-                var container = document.getElementById('mynetwork');
-                var data = {
-                    nodes: nodes,
-                    edges: edges
-                };
-                var options = {
-                    nodes: {
-                        color:{background:'#3D5273'},
-                        font:{color:'white'},
-                        shape:'box',
-                        font:{size:18, color:'white'}
-                    },
-                    layout: {
-                        hierarchical: {
-                            direction: "UD",
-                            sortMethod: "directed"
-                        }
-                    },
-                    interaction: {
-                        dragNodes :false,
-                        navigationButtons:true,
-                        keyboard:true
-                    },
-                    physics: {
-                        enabled: false
-                    }//,
-                    // configure: {
-                    //     filter: function (option, path) {
-                    //         if (path.indexOf('hierarchical') !== -1) {
-                    //             return true;
-                    //         }
-                    //         return false;
-                    //     },
-                    //     showButton:false
-                    // }
-                };
-                var network = new vis.Network(container, data, options);
-            </script>
+        <!-- Visjs graph - graph connection here, but data and options can be modified in the run directive -->
+        <div ng-show="run.showGraph" id="mynetwork" style="height:60% !important"></div>
+        <script type="text/javascript">
+            var container = document.getElementById('mynetwork');
+            var network = new vis.Network(container, run.data, run.options);
+        </script>
             
 </div>

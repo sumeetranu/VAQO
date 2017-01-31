@@ -19,6 +19,7 @@ app.config(['$routeProvider', '$locationProvider', function ($routeProvider) {
     .when("/", {templateUrl: "partials/home.html", controller: "GeneralCtrl"})
     // Pages
     .when("/about", {templateUrl: "partials/about.html", controller: "GeneralCtrl"})
+    .when("/userGuide", {templateUrl: "partials/userGuide.html", controller: "GeneralCtrl"})
     .when("/faq", {templateUrl: "partials/faq.html", controller: "GeneralCtrl"})
     .when("/contact", {templateUrl: "partials/contact.html", controller: "GeneralCtrl"})
     .when("/testDb", {templateUrl: "partials/testDb.html", controller: "TestDbCtrl"})

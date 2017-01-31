@@ -327,3 +327,10 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
     top:10px;
     right:10px;
 }
+
+.toggle-heading {
+    cursor: pointer;
+}
+
+.img-bordered{
+}

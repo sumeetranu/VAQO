@@ -1,0 +1,174 @@
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-lg-12">
+            <h1 class="page-header">User Guide</h1>
+            <ol class="breadcrumb">
+                <li><a href="../index.html">Home</a>
+                </li>
+                <li class="active">User Guide</li>
+            </ol>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-12">
+
+            <h2 class="toggle-heading" data-toggle="collapse" data-target="#landingPage">
+                1 Landing Page and Navigation
+            </h2>
+            <div id="landingPage" class="collapse">
+            <p>
+                The landing page asks where you want your database data to come from: the test database,
+                or an import from an external database. 
+            </p>
+            <p>
+                The navigation bar consists of 5 elements:
+            <p>
+            <div class="text-center">
+                <img class="img-rounded img-bordered" style="width:auto; align-self:center;" src="../images/Screenshot_navbar.png">
+            </div>
+            <br>
+            <ol>
+                <li><b>VAQO: </b>This button routes you to the home/landing page.</li>
+                <li><b>About: </b>General information about VAQO and its capabilities.</li>
+                <li><b>User Guide: </b>Detailed user guide with guidance on every portion of the website.</li>
+                <li><b>FAQ: </b>A list of Frequently Asked Questions and their answers.</li>
+                <li><b>Contact: </b>Contact information for the VAQO development team.</li>
+            </ol>
+            </div>
+
+            <h2 class="toggle-heading" data-toggle="collapse" data-target="#useTestDatabase">2 Use Test Database</h2>
+            <div id="useTestDatabase" class="collapse">
+                <p>
+                    This option allows you to use the default test database when running queries. The test database 
+                    cannot be modified by the user. Selecting this option will directly take you to the Workspace page
+                    where you can start performing operations on the dataset.
+                </p>
+                <p>
+                    If you want to view the test data while in the Workspace tab, click the "Database" button on the right
+                    to view its contents.
+                </p>
+            </div>
+
+            <h2 class="toggle-heading" data-toggle="collapse" data-target="#importExternalDatabase">3 Import External Database</h2>
+            <div id="importExternalDatabase" class="collapse">
+                <p>
+                    This option allows you to import your own database from a SQL dump. Clicking on the "Import External Database"
+                    section will take you to a page where you can enter your SQL dump. Once you enter the SQL dump in the editor,
+                    click "Import" to import the database. 
+                </p>
+
+                <p>
+                    The image below shows a sample SQL dump that creates a table called "testsample", defines its schema
+                    and then inserts 3 rows of data.
+                </p>
+                <div class="text-center">
+                    <img class="img-rounded img-bordered" style="width:auto; align-self:center;" src="../images/Screenshot_import_database.png">
+                </div>
+                <br>
+                <p>
+                    If you want to modify the database at any point, click on the "Database" button on the Workspace page.
+                    This will take you back to the Import External Database page where you can enter the new SQL dump.
+                </p>
+            </div>
+            
+            <h2 class="toggle-heading" data-toggle="collapse" data-target="#workspace">
+                3 Workspace
+            </h2>
+            <div id="workspace" class="collapse"> 
+                <p> 
+                    The Workspace is where you will spend most of your time on the website. In the workspace, you can run relational 
+                    algebra queries, optimize relational algebra queries and convert between relational algebra and SQL. The run
+                    and optimize tabs also show you a tree with the query break down.
+                </p>
+                <p>The image below shows the major components of the Workspace page.</p>
+                <div class="text-center">
+                    <img class="img-rounded img-bordered" style="width:auto;" src="../images/Screenshot_workspace.png">
+                </div>
+                <br>
+                <p>
+                    You can toggle between the three tabs: Run, Optimize and Convert. The Database button allows you to
+                    view the test database if you chose to use the test database or allows you to change the imported
+                    SQL dump if you chose to import the database.
+                </p>
+                <h3 class="toggle-heading" data-toggle="collapse" data-target="#run">3.1 Run</h3>
+                <div id="run" class="collapse">
+                    <p>
+                        Create a relational algebra query using the buttons and text box fields above the run button.
+                        Then, you can hit the Run button to run the query on the current database.
+                    </p>
+                    <p>
+                        When you run the query, you will see the resulting data table on the right side, and a query
+                        break down tree right below it. You can hover over the tree nodes to view additional info on 
+                        the different sections. The image below shows the result of running a query.
+                    </p>
+                    <div class="text-center">
+                        <img class="img-rounded img-bordered" style="width:auto; align-self:center;" src="../images/Screenshot_run.png">
+                    </div>
+
+                </div>
+
+                <h3 class="toggle-heading" data-toggle="collapse" data-target="#optimize">3.2 Optimize</h3>
+                <div id="optimize" class="collapse">
+                    <p>
+                        In the optimize tab, you can enter a relational algebra query into the text box. After that, simply
+                        hit "Optimize" to optimize the entered query.
+                    </p>
+                    <p>
+                        After optimizing, you will see the new optimized query show up on the right, with two trees below
+                        it. The Original tree represents the query breakdown for the query you originally entered and the
+                        Optimized tree will show the new, optimized one.
+                    </p>
+                    <div class="text-center">
+                        <img class="img-rounded img-bordered" style="width:auto; align-self:center;" src="../images/Screenshot_optimize.png">
+                    </div>
+                    <br>
+                </div>
+
+                <h3 class="toggle-heading" data-toggle="collapse" data-target="#convert">3.3 Convert</h3>
+                <div id="convert" class="collapse">
+                    <p>
+                        The convert tab allows you to convert queries between Relational Algebra and SQL.
+                    </p>
+
+
+                    <h4 class="toggle-heading" data-toggle="collapse" data-target="#toSql">3.3.1 Relational Algebra to SQL</h4>
+                    <div id="toSql" class="collapse">
+                        <p> 
+                            In order to convert from Relational Algebra to SQL, enter a Relational Algebra query in the box on the left.
+                            After entering the query, click the "Convert to SQL" button right below the box. An equivalent SQL query
+                            will appear in the box on the right.
+                        </p>
+                        <p>The image below demonstrates where to enter Relational Algebra queries to convert to SQL.</p>
+                        <div class="text-center">
+                            <img class="img-rounded img-bordered" style="width:auto; align-self:center;" src="../images/Screenshot_toSql.png">
+                        </div>
+                        <br>
+                    </div>
+
+                    <h4 class="toggle-heading" data-toggle="collapse" data-target="#toRelAlg">3.3.2 SQL to Relational Algebra</h4>
+                    <div id="toRelAlg" class="collapse">
+                        <p>
+                            In order to convert from SQL to Relational Algebra, enter a SQL query in the box on the right.
+                            After entering the query, click the "Convert to Relational Algebra" button right below the box. An equivalent 
+                            Relational Algebra query will appear in the box on the left.
+                        </p>
+                        <p>The image below demonstrates where to enter SQL queries to convert to Relational Algebra.</p>
+                        <div class="text-center">
+                            <img class="img-rounded img-bordered" style="width:auto; align-self:center;" src="../images/Screenshot_toRelAlg.png">
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>  
+            <p>For additional help, please refer to the <a href="#/faq">FAQ</a> section.</p>
+        </div>
+
+    </div>
+
+</div>
+<!-- /.container -->

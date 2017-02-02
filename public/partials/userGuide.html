@@ -17,10 +17,10 @@
 
         <div class="col-lg-12">
 
-            <h2 class="toggle-heading" data-toggle="collapse" data-target="#landingPage">
-                1 Landing Page and Navigation
+            <h2 class="toggle-heading" data-toggle="collapse" data-target="#landingPage" ng-click="heading1=!heading1">
+                <i class="fa" ng-class="(heading1) ? 'fa-caret-down': 'fa-caret-right'"></i> 1 Landing Page and Navigation
             </h2>
-            <div id="landingPage" class="collapse">
+            <div id="landingPage" class="collapse tab1">
             <p>
                 The landing page asks where you want your database data to come from: the test database,
                 or an import from an external database. 
@@ -41,8 +41,10 @@
             </ol>
             </div>
 
-            <h2 class="toggle-heading" data-toggle="collapse" data-target="#useTestDatabase">2 Use Test Database</h2>
-            <div id="useTestDatabase" class="collapse">
+            <h2 class="toggle-heading" data-toggle="collapse" data-target="#useTestDatabase" ng-click="heading2=!heading2">
+                <i class="fa" ng-class="(heading2) ? 'fa-caret-down': 'fa-caret-right'"></i> 2 Use Test Database
+            </h2>
+            <div id="useTestDatabase" class="collapse tab1">
                 <p>
                     This option allows you to use the default test database when running queries. The test database 
                     cannot be modified by the user. Selecting this option will directly take you to the Workspace page
@@ -54,8 +56,10 @@
                 </p>
             </div>
 
-            <h2 class="toggle-heading" data-toggle="collapse" data-target="#importExternalDatabase">3 Import External Database</h2>
-            <div id="importExternalDatabase" class="collapse">
+            <h2 class="toggle-heading" data-toggle="collapse" data-target="#importExternalDatabase" ng-click="heading3=!heading3">
+                <i class="fa" ng-class="(heading3) ? 'fa-caret-down': 'fa-caret-right'"></i> 3 Import External Database
+            </h2>
+            <div id="importExternalDatabase" class="collapse tab1">
                 <p>
                     This option allows you to import your own database from a SQL dump. Clicking on the "Import External Database"
                     section will take you to a page where you can enter your SQL dump. Once you enter the SQL dump in the editor,
@@ -76,10 +80,10 @@
                 </p>
             </div>
             
-            <h2 class="toggle-heading" data-toggle="collapse" data-target="#workspace">
-                4 Workspace
+            <h2 class="toggle-heading" data-toggle="collapse" data-target="#workspace" ng-click="heading4=!heading4">
+                <i class="fa" ng-class="(heading4) ? 'fa-caret-down': 'fa-caret-right'"></i> 4 Workspace
             </h2>
-            <div id="workspace" class="collapse"> 
+            <div id="workspace" class="collapse tab1"> 
                 <p> 
                     The Workspace is where you will spend most of your time on the website. In the workspace, you can run relational 
                     algebra queries, optimize relational algebra queries and convert between relational algebra and SQL. The run
@@ -95,8 +99,10 @@
                     view the test database if you chose to use the test database or allows you to change the imported
                     SQL dump if you chose to import the database.
                 </p>
-                <h3 class="toggle-heading" data-toggle="collapse" data-target="#run">4.1 Run</h3>
-                <div id="run" class="collapse">
+                <h3 class="toggle-heading" data-toggle="collapse" data-target="#run" ng-click="heading41=!heading41">
+                    <i class="fa" ng-class="(heading41) ? 'fa-caret-down': 'fa-caret-right'"></i> 4.1 Run
+                </h3>
+                <div id="run" class="collapse tab1">
                     <p>
                         Create a relational algebra query using the buttons and text box fields above the run button.
                         Then, you can hit the Run button to run the query on the current database.
@@ -112,8 +118,10 @@
 
                 </div>
 
-                <h3 class="toggle-heading" data-toggle="collapse" data-target="#optimize">4.2 Optimize</h3>
-                <div id="optimize" class="collapse">
+                <h3 class="toggle-heading" data-toggle="collapse" data-target="#optimize" ng-click="heading42=!heading42">
+                    <i class="fa" ng-class="(heading42) ? 'fa-caret-down': 'fa-caret-right'"></i> 4.2 Optimize
+                </h3>
+                <div id="optimize" class="collapse tab1">
                     <p>
                         In the optimize tab, you can enter a relational algebra query into the text box. After that, simply
                         hit "Optimize" to optimize the entered query.
@@ -129,15 +137,19 @@
                     <br>
                 </div>
 
-                <h3 class="toggle-heading" data-toggle="collapse" data-target="#convert">4.3 Convert</h3>
-                <div id="convert" class="collapse">
+                <h3 class="toggle-heading" data-toggle="collapse" data-target="#convert" ng-click="heading43=!heading43">
+                    <i class="fa" ng-class="(heading43) ? 'fa-caret-down': 'fa-caret-right'"></i> 4.3 Convert
+                </h3>
+                <div id="convert" class="collapse tab1">
                     <p>
                         The convert tab allows you to convert queries between Relational Algebra and SQL.
                     </p>
 
 
-                    <h4 class="toggle-heading" data-toggle="collapse" data-target="#toSql">4.3.1 Relational Algebra to SQL</h4>
-                    <div id="toSql" class="collapse">
+                    <h4 class="toggle-heading" data-toggle="collapse" data-target="#toSql" ng-click="heading431=!heading431">
+                        <i class="fa" ng-class="(heading431) ? 'fa-caret-down': 'fa-caret-right'"></i> 4.3.1 Relational Algebra to SQL
+                    </h4>
+                    <div id="toSql" class="collapse tab1">
                         <p> 
                             In order to convert from Relational Algebra to SQL, enter a Relational Algebra query in the box on the left.
                             After entering the query, click the "Convert to SQL" button right below the box. An equivalent SQL query
@@ -150,8 +162,10 @@
                         <br>
                     </div>
 
-                    <h4 class="toggle-heading" data-toggle="collapse" data-target="#toRelAlg">4.3.2 SQL to Relational Algebra</h4>
-                    <div id="toRelAlg" class="collapse">
+                    <h4 class="toggle-heading" data-toggle="collapse" data-target="#toRelAlg" ng-click="heading432=!heading432">
+                        <i class="fa" ng-class="(heading432) ? 'fa-caret-down': 'fa-caret-right'"></i> 4.3.2 SQL to Relational Algebra
+                    </h4>
+                    <div id="toRelAlg" class="collapse tab1">
                         <p>
                             In order to convert from SQL to Relational Algebra, enter a SQL query in the box on the right.
                             After entering the query, click the "Convert to Relational Algebra" button right below the box. An equivalent 

@@ -15,7 +15,7 @@ angular.module('vaqoApp')
                 // TODO: Print the contents of the code mirror to the console to get handle to it
                 console.log('Run query...');
                 // This is where you will run the query and display results. 
-                queryStatement("SELECT * from Person;");
+
                 // Temporarily setting the result data
                 this.messages = [{text:"1 text", val:'45'}, {text:"2 text", val:'45'}];
 

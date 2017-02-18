@@ -38,9 +38,10 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.22.0/mode/xml/xml.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.22.0/codemirror.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.22.0/mode/javascript/javascript.min.js"></script>
-        <textarea placeholder="[Enter relational algebra queryy]" class="codearea" id="raCodearea" style="width:100%; height:100%; display:none"></textarea>
+        <textarea placeholder="[Enter relational algebra queryy]" class="codearea" id="raCodearea" ng-model="run.raCodeArea" style="width:100%; height:100%; display:none"></textarea>
+        <!--<textarea ui-codemirror="run.editorHTML" id="run.editorHTML" ng-model="run.codeHTML"></textarea>-->
         
-        <script>
+        <script type="text/javascript">
 	        //window.onload = function () {
                 var myTextArea = document.getElementById("raCodearea");
                 
@@ -142,7 +143,7 @@
                     };
                 });
 
-                var minLines = 10;
+                var minLines = 3;
                 var startingValue = '';
                 for (var i = 0; i < minLines; i++) {
                     startingValue += '\n';
@@ -156,7 +157,10 @@
                         gutters: ["CodeMirror-linenumbers"]
                     } 
                 );
-                editor.setValue(startingValue);
+
+
+               
+
             //};  
         </script>
     </div>
@@ -168,12 +172,20 @@
 <div class="col-sm-6" style="height:100%">
     <h4 style="text-align:center; height:5%" class="red-text">Results</h4>
         <!--<p style="vertical-align:center">Run a query to see the results.</p>-->
-        <p ng-if="!run.showGraph">Run a query to view results.</p>
-        <table ng-table="vm.tableParams" class="table" show-filter="true" style="height:20% !important">
-            <tr ng-repeat = "message in run.messages">
-                <td title="'Text'" filter="{text:'text'}" sortable="'text'">{{message.text}}</td>
-                <td title="'Value'" filter="{val:'text'}" sortable="'val'">{{message.val}}</td>
-            </tr>
+        <p ng-if="!run.showGraph">Run a query to view results. </p>
+        <table ng-table="run.tableParams" class="table" show-filter="true" style="height:20% !important">
+            <thead>
+                <tr>
+                    <th>col1</th>
+                    <th>col2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat = "message in run.messages">
+                    <td title="'Text'" filter="{text:'text'}" sortable="'text'">{{message.text}}</td>
+                    <td title="'Value'" filter="{val:'text'}" sortable="'val'">{{message.val}}</td>
+                </tr>
+            </tbody>
         </table>
 
         <br>

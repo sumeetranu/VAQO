@@ -8,7 +8,8 @@ angular.module('vaqoApp')
         controllerAs: 'convert',
         controller:function(){
             // "this.xxx" allows you to access from templateUrl as "convert.xxx"
-            
+            // TODO: change this. to vm. and set ' var vm = this;'
+
             this.convertToSql = function(){
                 console.log('Convert to sql');
 

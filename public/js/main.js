@@ -7,7 +7,7 @@
  * Main AngularJS Web Application
  */
 var app = angular.module('vaqoApp', [
-  'ngRoute'
+  'ngRoute', 'ui.codemirror'
 ]);
 
 /**

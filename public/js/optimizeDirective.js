@@ -8,6 +8,7 @@ angular.module('vaqoApp')
         controllerAs: 'optimize',
         controller:function(){
             // "this.xxx" allows you to access from templateUrl as "optimize.xxx"
+            // TODO: change this. to vm. and set ' var vm = this;'
             this.optimizedQueryString = "Optimized query will go here...";
             this.showGraphs = false;
 

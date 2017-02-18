@@ -6,22 +6,42 @@ angular.module('vaqoApp')
         templateUrl:'../partials/runTemplate.html',
         scope: true,
         controllerAs: 'run',
-        controller:function(){
-            // "this.xxx" allows you to access from templateUrl as "run.xxx"
-            this.messages = [];
-            this.showGraph = false;
-            
-            this.runQuery = function(){
+        controller:function($http){
+            // "vm.xxx" allows you to access from templateUrl as "run.xxx"
+            var vm = this;
+            vm.messages = [];
+            vm.showGraph = false;
+
+            var minLines = 7;
+            var startingValue = '';
+            for (var i = 0; i < minLines; i++) {
+                vm.startingValue += '\n';
+            }
+
+            vm.tableParams = {};
+
+            editor.getDoc().setValue(startingValue);
+                        
+            vm.runQuery = function(){
                 // TODO: Print the contents of the code mirror to the console to get handle to it
                 console.log('Run query...');
-                // This is where you will run the query and display results. 
 
-                // Temporarily setting the result data
-                this.messages = [{text:"1 text", val:'45'}, {text:"2 text", val:'45'}];
+                // This is where you will run the query and display results. 
+                var data = {params:{queryString: 'SELECT * FROM Person;'}};
+                $http.get('/queryDatabase', data).then(function(data, status){
+                    // TODO: Actually parse the data here and set messages to the correct value
+                    vm.messages = [{text:"123 text", val:data.data}, {text:"2 text", val:'45'}];
+                });
+
+                // Failed attempts at getting coremirror editor values:
+                //console.log('Value:', editor.getValue());
+                //console.log('textArea:', myTextArea);
 
                 // Update graph results
-                this.showGraph = true;
+                vm.showGraph = true;
                 updateNodes();
+
+                editor.refresh(); // For code mirror editor
             };
 
             // Initialize nodes, edges and options

@@ -61,7 +61,6 @@ app.get('/queryDatabase', function(req, res){
 		req.query.colCount = columnCount;
 	});
 */
-	z
 
 	result = "";
 	request.on('row', function(columns) {  

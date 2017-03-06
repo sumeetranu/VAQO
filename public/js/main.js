@@ -231,7 +231,7 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
       // This is where you will run the query and display results. 
       // TODO: Get the actual query string instead of 'SELECT * FROM Person;'
       
-      var data_in = {params:{queryString: $scope.cmModel.string}};
+      var data_in = {params:{queryString: 'SELECT * FROM Person;'}};
       $http.get('/queryDatabase', data_in).then(function(data_out, status){
           // TODO: Actually parse the data here and set messages to the correct value
           console.log(data_out);

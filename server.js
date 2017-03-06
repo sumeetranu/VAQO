@@ -48,6 +48,7 @@ app.get('/queryDatabase', function(req, res){
 	// Note: The above advice might not work. If you have issues with it, let me know.
 	request.on('row', function(columns) {  
 		columns.forEach(function(column) {  
+			console.log(column);
 			if (column.value === null) {  
 			console.log('NULL');  
 			} else {  

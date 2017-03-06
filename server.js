@@ -43,14 +43,33 @@ app.get('/queryDatabase', function(req, res){
 		} else {
 			console.log('Successfully retrieved ', rowcount, ' rows.');
 		}  
+
 	});  
-	var result = "";  //TODO: Change this to be a list [] of objects {} and then in the loop, add to the object
-	// Note: The above advice might not work. If you have issues with it, let me know.
+
+	var columnCount = 0;
+
+/*	request.on('columnMetadata', function (columns) { 
+		columns.forEach(function(column1){
+			if (column1.colName === null) {
+				console.log('NULL');
+			} else {
+				columnCount++;
+				result+= column1.colName + " ";
+			}
+		})
+		result += columnCount + " ";
+		req.query.colCount = columnCount;
+	});
+*/
+	z
+
+	result = "";
 	request.on('row', function(columns) {  
 		columns.forEach(function(column) {  
 			if (column.value === null) {  
 			console.log('NULL');  
 			} else {  
+			console.log(column.metadata.colName);
 			result+= column.value + " ";  
 			}  
 		});  

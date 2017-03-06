@@ -27,10 +27,11 @@ angular.module('vaqoApp')
                 console.log('Run query...');
 
                 // This is where you will run the query and display results. 
-                var data = {params:{queryString: 'SELECT * FROM Person;'}};
-                $http.get('/queryDatabase', data).then(function(data, status){
+                var data_in = {params:{queryString: 'SELECT * FROM Person;'}};
+                $http.get('/queryDatabase', data_in).then(function(data_out, status){
                     // TODO: Actually parse the data here and set messages to the correct value
-                    vm.messages = [{text:"123 text", val:data.data}, {text:"2 text", val:'45'}];
+                    console.log()
+                    vm.messages = [{text:data.colCount, val:data_out.data}, {text:"2 text", val:'45'}];
                 });
 
                 // Failed attempts at getting coremirror editor values:

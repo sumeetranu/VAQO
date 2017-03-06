@@ -66,6 +66,7 @@ app.get('/queryDatabase', function(req, res){
 	result = "";
 	request.on('row', function(columns) {  
 		columns.forEach(function(column) {  
+			console.log(column);
 			if (column.value === null) {  
 			console.log('NULL');  
 			} else {  

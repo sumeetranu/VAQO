@@ -233,13 +233,13 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
       
       var data_in = {params:{queryString: 'SELECT * FROM Person;'}};
       $http.get('/queryDatabase', data_in).then(function(data_out, status){
-          // TODO: Actually parse the data here and set messages to the correct value
-          console.log(data_out);
-          $scope.messages = [{text:"123 text", val:data_out.data}, {text:"2 text", val:'45'}];
+          $scope.data_headers = data_out.data['dataColumns'];
+          $scope.data_results = data_out.data['valueDictionary'];
+          // $scope.messages = [{text:"123 text", val:data_out.data}, {text:"2 text", val:'45'}];
       });
 
       // Failed attempts at getting coremirror editor values:
-      console.log('Value:', $scope.cmModel.string);
+     // console.log('Value:', $scope.cmModel.string);
 
       // Update graph results
       $scope.showGraph = true;

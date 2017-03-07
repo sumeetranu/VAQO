@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var port = process.env.port || 1337
 var tedious = require('tedious');
+
 /*app.get('/', function(req, res){
 	res.send("Hello " + req.query.name + " from server.js!");
 });*/
@@ -36,49 +37,44 @@ connection.on('connect', function (err) {
 app.get('/queryDatabase', function(req, res){
 	var statement = req.query.queryString;
 	var Request = tedious.Request;
+	dataDictionary = [];  
+	dataResults = {dataColumns:"", valueDictionary:""};
 
-	request = new Request(statement, function(err, rowcount) {  
+	request = new Request(statement, function(err, rowCount) {  
 		if (err) {  
 			console.log('Error: ' + err);
 		} else {
-			console.log('Successfully retrieved ', rowcount, ' rows.');
+			//Add query result and column names to json object.
+			//Remove extra spaces in column names and remove empty column nodes created by split.
+			dataResults["dataColumns"] = dataResults["dataColumns"].split(" ");
+			dataResults["dataColumns"] = dataResults["dataColumns"].filter(Boolean)
+			dataResults["valueDictionary"] = dataDictionary;
+
+			//Send data back to directives.
+			res.send(dataResults);
 		}  
 
-	});  
-
-	var columnCount = 0;
-
-/*	request.on('columnMetadata', function (columns) { 
-		columns.forEach(function(column1){
-			if (column1.colName === null) {
-				console.log('NULL');
-			} else {
-				columnCount++;
-				result+= column1.colName + " ";
-			}
-		})
-		result += columnCount + " ";
-		req.query.colCount = columnCount;
 	});
-*/
 
-	result = "";
 	request.on('row', function(columns) {  
-		columns.forEach(function(column) {  
-			console.log(column);
-			if (column.value === null) {  
-			console.log('NULL');  
-			} else {  
-			console.log(column.metadata.colName);
-			result+= column.value + " ";  
-			}  
-		});  
-	});  
+	temp = {};
+		columns.forEach(function(column) {
+			//Check if data column already exist
+			if(!dataResults["dataColumns"].includes(column.metadata.colName)) 
+			{
+				dataResults["dataColumns"] += column.metadata.colName + " ";
+			}
+			//Convert all data into string
+			//Remove white spaces from data
+			var tempVar = String(column.value);
+			tempVar = tempVar.replace(/\s+/g, '');
 
-	request.on('doneProc', function() {  
-		console.log('Result:', result);
-		res.send(result);
-	});  
+			temp[column.metadata.colName] = tempVar;
+		});  
+		//Push temp object into dictionary object
+		dataDictionary.push(temp);
+	});
+
 	connection.execSql(request);  
 });
 

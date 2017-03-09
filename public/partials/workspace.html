@@ -97,13 +97,16 @@
                         <table ng-table="tableParams" class="table" show-filter="true" style="height:20% !important">
                             <thead>
                                 <tr>
-                                    <th ng-repeat = "header in data_out.asdfjasdf.headers"></th>
+                                    <th ng-repeat = "header in data_headers">
+                                        {{header}}
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat = "message in messages">
-                                    <td title="'Text'" filter="{text:'text'}" sortable="'text'">{{message.text}}</td>
-                                    <td title="'Value'" filter="{val:'text'}" sortable="'val'">{{message.val}}</td>
+                                <tr ng-repeat="row in data_results">
+                                    <td ng-repeat="header in data_headers">
+                                        {{row[header]}}
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

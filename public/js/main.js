@@ -1038,7 +1038,6 @@ schema["T"] = [4, ["b", "string"], ["d", "int"]]
 schema["Person"] = [5, ["firstname", "string"], ["lastname", "string"], ["age", "int"]];
 
 var b = TreeToSql(tree, "", 0, schema);
-prompt("Copy to clipboard: Ctrl+C, Enter", b[0]);
 
 
 

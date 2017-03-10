@@ -21,6 +21,24 @@ body {
     cursor:pointer;
 }
 
+.navbar-brand {
+    color:#eee !important;
+}
+
+.navbar-brand:hover {
+    background-color:#6F0000 !important;
+}
+
+.navbar-button {
+    color:#eee !important;
+}
+
+.navbar-button:hover {
+    background-color:#6F0000 !important;
+}
+
+
+
 
 .img-home-portfolio,
 .img-customer,
@@ -337,17 +355,14 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 
 .blue-panel > .panel-heading {
     background-image: none !important;
-    background-color: #3D5273 !important;
+    background-color: #6F0000 !important;
     color: white !important;
-    border: 1px solid #3D5273 !important;
 }
 
 .blue-panel > .panel-body {
     background-image: none !important;
-    background-color: white !important;
-    color: black !important;
-    border: 1px solid #3D5273 !important;
-
+    background-color: #3D5273 !important;
+    color: white !important;
 }
 
 .big-btn-red {
@@ -363,6 +378,14 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
     background-color: #6F0000;
     border-radius: 0px;
 }
+
+.big-box-red {
+    border: 5px solid #6F0000;
+    color:#6F0000;
+    background-color: white;
+    border-radius: 0px;
+}
+
 
 .tab1 {
     padding-left: 30px;

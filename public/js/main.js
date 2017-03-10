@@ -980,33 +980,9 @@ function SqlToTree(query)
     } 
 }
 
-/*
-pi a, c (
-	sigma a < 4 (
-		(pi a,c (sigma a < 5 (R))) njoin S
-	)
-)
-*/
 
-/* symbols:
-Complete: πσρ ∩∪-⨯⨝--
-Todo: ←∧∨¬=≠≥≤     
-pi              \u03C0
-sigma           \u03C3
-rho             \u03C1
-njoin           \u2A1D
-Union           \u222A
-Intersection    \u2229
-Subtraction     \u2A2F
-ARROW           \u27F5
-*/
+query = $scope.cmModel.string;
 
-query = "\t \n  \u03C0 a, b (\n    \u03C3 a < 3 (\n       \u222A(pi b,a (sigma a < 5 (R)),S)\n    )\n)"
-//query = "\u03C0 a, d (\u03C1 d<-c (\u2A2F(S, T))\n)"
-
-//query = "\u03C0 b ,d (\u03C3 b != 'a' (\u222A(\u03C0 b, d(S),T))) "
-
-//query = "\u2229 (S, S)"
 var cind = query.indexOf("--")
 while (cind != -1)
 {
@@ -1024,10 +1000,6 @@ while (cind != -1)
 
 newq = query.replace(/[^\x21-\x7E\u03C0\u03C1\u03C3\u2A1D\u222A\u2229\u2A2F\u27F5]+/g, ' ');
 newq = newq.replace(/^\s+|\s+$/g, '').trim();
-var a = [];
-a.push(1);
-//window.alert(query);
-//window.alert(newq);
 var tree = createTree(newq);
 var a = TreeToGraphRun(tree);
 
@@ -1076,16 +1048,37 @@ var b = TreeToSql(tree, "", 0, schema);
     //     {from: 2, to: 6}
     // ]);
 
-    // var sql = "select                a    from    (select     a from R)  as  alias1, T, S, U, Q where a > 1";
-    var sql = $scope.cmModel.string; //Reading from the input codemirror and displaying the nodes for it
-    newsql = sql.replace(/[^\x21-\x7E\u03C0\u03C1\u03C3\u2A1D\u222A\u2229\u2A2F\u27F5]+/g, ' ');
-    newsql = newsql.replace(/^\s+|\s+$/g, '').trim();
+    query = $scope.cmModel.string;
+    var cind = query.indexOf("--")
+    while (cind != -1)
+    {
+        nlind = query.indexOf("\n");
+        if (nlind == -1)
+        {
+            query = query.replace(query.substring(cind), "");
+        }
+        else
+        {
+            query = query.replace(query.substring(cind, nlind), "");
+        }
+        cind = query.indexOf("--")
+    }
 
-    var disTree = SqlToTree(newsql);
-    var a = TreeToGraphRun(disTree);
+    newq = query.replace(/[^\x21-\x7E\u03C0\u03C1\u03C3\u2A1D\u222A\u2229\u2A2F\u27F5]+/g, ' ');
+    newq = newq.replace(/^\s+|\s+$/g, '').trim();
+    var tree = createTree(newq);
+    var graph = TreeToGraphRun(tree);
 
-    var nodes = new vis.DataSet(a[0]);
-    var edges = new vis.DataSet(a[1]);
+    var schema = {};
+    schema["R"] = [5, ["a", "int"],["b", "string"], ["c", "string"]]
+    schema["S"] = [5, ["b", "string"], ["d", "int"]]
+    schema["T"] = [4, ["b", "string"], ["d", "int"]]
+    schema["Person"] = [5, ["firstname", "string"], ["lastname", "string"], ["age", "int"]];
+
+    var sql = TreeToSql(tree, "", 0, schema);
+
+    var nodes = new vis.DataSet(graph[0]);
+    var edges = new vis.DataSet(graph[1]);
 
     // Updating the dataset for the network
     network.setData({

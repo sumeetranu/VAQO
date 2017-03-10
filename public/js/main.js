@@ -196,7 +196,7 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
         interaction: {
             dragNodes :false,
             navigationButtons:true,
-            keyboard:true
+            keyboard:false
         },
         physics: {
             enabled: false
@@ -231,7 +231,20 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
       // This is where you will run the query and display results. 
       // TODO: Get the actual query string instead of 'SELECT * FROM Person;'
       
-      var data_in = {params:{queryString: 'SELECT * FROM Person;'}};
+      // Placeholder for the schema dictionary
+      // [ numRows, [a1, type2], [a2, type2], ... [an, typen] ]
+      var tree = updateNodes();
+
+      schema["R"] = [5, ["a", "int"],["b", "string"], ["c", "string"]]
+      schema["S"] = [5, ["b", "string"], ["d", "int"]]
+      schema["T"] = [4, ["b", "string"], ["d", "int"]]
+      schema["Person"] = [5, ["firstname", "string"], ["lastname", "string"], ["age", "int"]];
+
+      var out = TreeToSql(tree, "", 0, schema);
+      var sql = out[0];
+      var noReturns = sql.replace(/[^\x21-\x7E\u03C0\u03C1\u03C3\u2A1D\u222A\u2229\u2A2F\u27F5]+/g, ' ');
+      noReturns = noReturns.replace(/^\s+|\s+$/g, '').trim();
+      var data_in = {params:{queryString: sql}};
       $http.get('/queryDatabase', data_in).then(function(data_out, status){
           $scope.data_headers = data_out.data['dataColumns'];
           $scope.data_results = data_out.data['valueDictionary'];
@@ -243,7 +256,10 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
 
       // Update graph results
       $scope.showGraph = true;
-      updateNodes();
+      
+
+      console.log(sql);
+
 
       $scope.cmModel.string = 'OVERWRITE';
 
@@ -452,17 +468,25 @@ function parseCross(str)
 
 function createTree(q)
 {
-    if (q.startsWith("\u03C0 ") || q.startsWith("pi "))
+    if (q.startsWith("\u03C0 ") || q.startsWith("pi"))
     {
-        newq = q.substring(q.indexOf(" ") + 1);
-        return parseProject(newq);
+        if (q.indexOf(" ") != -1)
+        {
+            newq = q.substring(q.indexOf(" ") + 1);
+            return parseProject(newq);
+        }
+        else
+        {
+            //todo give error messages
+            return null;
+        }
     }
-    else if (q.startsWith("\u03C3 ") || q.startsWith("sigma "))
+    else if (q.startsWith("\u03C3 ") || q.startsWith("sigma"))
     {
         newq = q.substring(q.indexOf(" ") + 1);
         return parseSelect(newq);
     }
-    else if (q.startsWith("\u03C1 ") || q.startsWith("rho "))
+    else if (q.startsWith("\u03C1 ") || q.startsWith("rho"))
     {
         newq = q.substring(q.indexOf(" ") + 1);
         return parseRho(newq);
@@ -479,13 +503,13 @@ function createTree(q)
         newq = q.substring(q.indexOf("(") + 1, q.lastIndexOf(")"));
         return parseUnion(newq);
     }
-    else if (q.startsWith("\u2229") || q.startsWith("intersection"))
+    else if (q.startsWith("\u2229") || q.startsWith("intersect"))
     {
         //TODO add conditions.
         newq = q.substring(q.indexOf("(") + 1, q.lastIndexOf(")"));
         return parseIntersection(newq);
     }
-    else if (q.startsWith("-") || q.startsWith("subtraction"))
+    else if (q.startsWith("-") || q.startsWith("subtract"))
     {
         //TODO add conditions.
         newq = q.substring(q.indexOf("(") + 1, q.lastIndexOf(")"));
@@ -583,7 +607,7 @@ function NodeToSQL(node, subqueries, alias, schema)
         {
             query = select + subqueries[0];
         }
-        else if (node.children[0].children.length == 0)
+        else if (node.children[0].children.length == 0 || node.children[0].type == TypeEnum.Cross)
         {
             query = select + "FROM " + subqueries[0];
         }
@@ -777,6 +801,20 @@ function NodeToSQL(node, subqueries, alias, schema)
             query = subqueries[0] + "\nUNION\n" + subqueries[1];
         }
         
+    }
+    else if (node.type == TypeEnum.Cross)
+    {
+        if (node.children[0].type != TypeEnum.Data)
+        {
+            subqueries[0] = "(" + subqueries[0] + ") as alias" + alias;
+            alias++;
+        }
+        if (node.children[1].type != TypeEnum.Data)
+        {
+            subqueries[1] = "(" + subqueries[1] + ") as alias" + alias;
+            alias++;
+        }
+        query = subqueries[0] +  "," +  subqueries[1];
     }
     else if (node.type == TypeEnum.Data)
     {
@@ -1070,13 +1108,7 @@ var b = TreeToSql(tree, "", 0, schema);
     var graph = TreeToGraphRun(tree);
 
     var schema = {};
-    schema["R"] = [5, ["a", "int"],["b", "string"], ["c", "string"]]
-    schema["S"] = [5, ["b", "string"], ["d", "int"]]
-    schema["T"] = [4, ["b", "string"], ["d", "int"]]
-    schema["Person"] = [5, ["firstname", "string"], ["lastname", "string"], ["age", "int"]];
-
-    var sql = TreeToSql(tree, "", 0, schema);
-
+    
     var nodes = new vis.DataSet(graph[0]);
     var edges = new vis.DataSet(graph[1]);
 
@@ -1085,6 +1117,8 @@ var b = TreeToSql(tree, "", 0, schema);
         nodes: nodes,
         edges: edges
     });
+
+    return tree;
 
   }
 
@@ -1213,6 +1247,21 @@ var b = TreeToSql(tree, "", 0, schema);
     console.log('Convert to sql');
 
     // TODO: Get handle from code mirror for Relational Algebra code
+    var query = "";
+    query = $scope.cmModelConvertRa.string; 
+    var newq = query.replace(/[^\x21-\x7E\u03C0\u03C1\u03C3\u2A1D\u222A\u2229\u2A2F\u27F5]+/g, ' ');
+    newq = newq.replace(/^\s+|\s+$/g, '').trim();
+    var tree = createTree(newq);
+
+    schema["R"] = [5, ["a", "int"],["b", "string"], ["c", "string"]]
+    schema["S"] = [5, ["b", "string"], ["d", "int"]]
+    schema["T"] = [4, ["b", "string"], ["d", "int"]]
+    schema["Person"] = [5, ["firstname", "string"], ["lastname", "string"], ["age", "int"]];
+
+    var out = TreeToSql(tree, "", 0, schema);
+    var sql = out[0];
+
+    console.log(sql);
 
     updateSqlEditor( $scope.cmModelConvertRa);
             

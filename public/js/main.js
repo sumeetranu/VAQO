@@ -242,7 +242,7 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
 
       var out = TreeToSql(tree, "", 0, schema);
       var sql = out[0];
-      var noReturns = sql.replace(/[^\x21-\x7E\u03C0\u03C1\u03C3\u2A1D\u222A\u2229\u2A2F\u27F5]+/g, ' ');
+      var noReturns = sql.replace(/[^\x21-\x7E\u03C0\u03C1\u03C3\u2A1D\u222A\u2229\u2A2F\u27F5\u2227\u2228]+/g, ' ');
       noReturns = noReturns.replace(/^\s+|\s+$/g, '').trim();
       var data_in = {params:{queryString: sql}};
       $http.get('/queryDatabase', data_in).then(function(data_out, status){
@@ -491,7 +491,7 @@ function createTree(q)
         newq = q.substring(q.indexOf(" ") + 1);
         return parseRho(newq);
     }
-    else if (q.startsWith("\u2A1D") || q.startsWith("njoin"))
+    else if (q.startsWith("\u2A1D") || q.startsWith("join"))
     {
         //TODO add conditions.
         newq = q.substring(q.indexOf("(") + 1, q.lastIndexOf(")"));
@@ -595,10 +595,17 @@ function Node(type, val)
     this.parent = null;
     this.children = [];
 }
+
+var Types = ["\u03C0", "\u03C3", "\u03C1", "\u2A1D", "Data"
+, "\u222A", "\u2229", "-", "\u2A2F"]
+
+var TypeEnum = {"Pi":0, "Sigma":1, "Rho":2, "NJoin":3, "Data":4,
+ "Union":5, "Intersect":6, "Subtraction":7, "Cross":8}
 */
 
 function NodeToSQL(node, subqueries, alias, schema)
 {
+    // TODO handle multiple selects.
     var query = "";
     if (node.type == TypeEnum.Pi)
     {
@@ -617,13 +624,22 @@ function NodeToSQL(node, subqueries, alias, schema)
             alias++;
         }
     }
-    else if (node.type == TypeEnum.Sigma)
+    else if (node.type == TypeEnum.Sigma && node.parent.type != TypeEnum.Sigma)
     {
         var conditions = node.value.replace(",", "AND");
         query = "FROM " + subqueries[0] + "\nWHERE " + conditions;
-        if (node.parent == TypeEnum.Pi)
+        if (node.parent.type != TypeEnum.Pi)
         {
             query = "SELECT DISTINCT *\n" + query;
+        }
+        if (node.children[0].type == TypeEnum.Sigma)
+        {
+            var curNode = node.children[0];
+            while (curNode.type = TypeEnum.Sigma)
+            {
+                conditions += curNode.value;
+                curNode = curNode.children[0]
+            }
         }
     }
     else if (node.type == TypeEnum.Rho)
@@ -818,10 +834,41 @@ function NodeToSQL(node, subqueries, alias, schema)
     }
     else if (node.type == TypeEnum.Data)
     {
-        var query = node.value
+        if (node.parent == null)
+        {
+            var query = "select distinct * from " + node.value;
+        }
+        else
+        {
+            var query = node.value;
+        }
+        
         
     }
     return [query, alias, schema];
+}
+
+function NodeToRA(node, subqueries)
+{
+    var query = "";
+    if (node.type == TypeEnum.Pi || node.type == TypeEnum.Sigma || node.type == TypeEnum.Rho)
+    {
+        query = Types[node.type] + " " + node.value + " (" + subqueries[0] + ")";
+    }
+    else if (node.type == TypeEnum.NJoin || node.type == TypeEnum.Union || node.type == TypeEnum.Intersect || node.type == TypeEnum.Subtraction || node.type == TypeEnum.Cross)
+    {
+        var val = node.value;
+        if (val != "")
+        {
+            val = " " + val + " ";
+        }
+        query = Types[node.type] +  val + "(" + subqueries[0] + "," + subqueries[1] +  ")";
+    }
+    else if (node.type == TypeEnum.Data)
+    {
+        query = node.value;
+    }
+    return query;
 }
 
 function TreeToSql(node, query, alias, schema)
@@ -835,6 +882,18 @@ function TreeToSql(node, query, alias, schema)
     }
 
     return NodeToSQL(node, subqueries, alias, schema);
+}
+
+function TreeToRA(node, query)
+{
+    var subqueries = [];
+	for (var i = 0; i < node.children.length; i++)
+	{
+        var out = TreeToRA(node.children[i], query);
+        subqueries.push(out);
+    }
+
+    return NodeToRA(node, subqueries);
 }
 
 function GetFirstParens(query)
@@ -861,6 +920,11 @@ function GetFirstParens(query)
 function SqlToTree(query)
 {
     var select = query.indexOf("select");
+    var selectLen = 6;
+    if (query.indexOf("select distinct") == select)
+    {
+        selectLen = 15;
+    }
     var from = query.indexOf("from");
     var children = [];
     
@@ -878,7 +942,7 @@ function SqlToTree(query)
     
     var where = query.lastIndexOf("where");
 
-    var selectString = query.substring(select + 6, from).trim();
+    var selectString = query.substring(select + selectLen, from).trim();
     var selectVars = [];
     piNode = null;
     
@@ -1018,6 +1082,47 @@ function SqlToTree(query)
     } 
 }
 
+function BreakUpSelects(node)
+{
+    if (node.type == TypeEnum.Sigma)
+    {
+        if (node.value.indexOf(" and ") != -1 || node.value.indexOf("\u2227") != -1)
+        {
+            var andloc = 0;
+            var left = "";
+            var right = "";
+            if (node.value.indexOf(" and ") != -1)
+            {
+                andLoc = node.value.indexOf(" and ");
+                left = node.value.substring(0, andLoc);
+                right = node.value.substring(andLoc + 5);
+            }
+            else 
+            {
+                andLoc = node.value.indexOf("\u2227");
+                left = node.value.substring(0, andLoc);
+                right = node.value.substring(andLoc + 1);
+            }
+            node.value = left;
+            var RightNode = new Node(TypeEnum.Sigma, right);
+            node.children[0].parent = RightNode;
+            RightNode.children = node.children;
+            node.children = [RightNode];
+            RightNode.parent = node;
+        }
+    }
+    for (var i = 0; i < node.children.length; i++)
+    {
+        var newChild = BreakUpSelects(node.children[i]);
+        node.children[i] = newChild;
+    }
+    return node;
+}
+
+function OptimizeTree(node)
+{
+    return BreakUpSelects(node);
+}
 
 query = $scope.cmModel.string;
 
@@ -1035,8 +1140,7 @@ while (cind != -1)
     }
     cind = query.indexOf("--")
 }
-
-newq = query.replace(/[^\x21-\x7E\u03C0\u03C1\u03C3\u2A1D\u222A\u2229\u2A2F\u27F5]+/g, ' ');
+newq = query.replace(/[^\x21-\x7E\u03C0\u03C1\u03C3\u2A1D\u222A\u2229\u2A2F\u27F5\u2227\u2228]+/g, ' ');
 newq = newq.replace(/^\s+|\s+$/g, '').trim();
 var tree = createTree(newq);
 var a = TreeToGraphRun(tree);
@@ -1102,9 +1206,10 @@ var b = TreeToSql(tree, "", 0, schema);
         cind = query.indexOf("--")
     }
 
-    newq = query.replace(/[^\x21-\x7E\u03C0\u03C1\u03C3\u2A1D\u222A\u2229\u2A2F\u27F5]+/g, ' ');
+    newq = query.replace(/[^\x21-\x7E\u03C0\u03C1\u03C3\u2A1D\u222A\u2229\u2A2F\u27F5\u2227\u2228]+/g, ' ');
     newq = newq.replace(/^\s+|\s+$/g, '').trim();
     var tree = createTree(newq);
+    //tree = OptimizeTree(tree);
     var graph = TreeToGraphRun(tree);
 
     var schema = {};
@@ -1154,7 +1259,28 @@ var b = TreeToSql(tree, "", 0, schema);
   $scope.optimizeQuery = function(){
     // TODO: Print the contents of the code mirror to the console to get handle to it
     console.log('Optimize query!');
-    // This is where you will run the query and display results. 
+
+    query = $scope.cmModelOptimize.string;
+    var cind = query.indexOf("--")
+    while (cind != -1)
+    {
+        nlind = query.indexOf("\n");
+        if (nlind == -1)
+        {
+            query = query.replace(query.substring(cind), "");
+        }
+        else
+        {
+            query = query.replace(query.substring(cind, nlind), "");
+        }
+        cind = query.indexOf("--")
+    }
+
+    newq = query.replace(/[^\x21-\x7E\u03C0\u03C1\u03C3\u2A1D\u222A\u2229\u2A2F\u27F5\u2227\u2228]+/g, ' ');
+    newq = newq.replace(/^\s+|\s+$/g, '').trim();
+    var tree = createTree(newq);
+    
+    tree = OptimizeTree(tree);
 
     // Temporarily setting the results to <temp results>
     $scope.optimizedQueryString = '<temp results>';
@@ -1249,7 +1375,7 @@ var b = TreeToSql(tree, "", 0, schema);
     // TODO: Get handle from code mirror for Relational Algebra code
     var query = "";
     query = $scope.cmModelConvertRa.string; 
-    var newq = query.replace(/[^\x21-\x7E\u03C0\u03C1\u03C3\u2A1D\u222A\u2229\u2A2F\u27F5]+/g, ' ');
+    var newq = query.replace(/[^\x21-\x7E\u03C0\u03C1\u03C3\u2A1D\u222A\u2229\u2A2F\u27F5\u2227\u2228]+/g, ' ');
     newq = newq.replace(/^\s+|\s+$/g, '').trim();
     var tree = createTree(newq);
 
@@ -1270,9 +1396,16 @@ var b = TreeToSql(tree, "", 0, schema);
   $scope.convertToRelAlg = function(){
     console.log('Convert to rel alg');
 
-    // TODO: Get handle from code mirror for Relational Algebra code
+    query = $scope.cmModelConvertSql.string; 
+    var newq = query.replace(/[^\x21-\x7E\u03C0\u03C1\u03C3\u2A1D\u222A\u2229\u2A2F\u27F5\u2227\u2228]+/g, ' ');
+    newq = newq.replace(/^\s+|\s+$/g, '').trim().toLowerCase();
+    var tree = SqlToTree(newq);
 
-    updateRelAlgEditor($scope.cmModelConvertSql);
+
+    var Ra = TreeToRA(tree, "", 0, schema);
+
+    console.log(Ra);
+    updateRelAlgEditor($scope.cmModelConvertRa);
 
   }
 

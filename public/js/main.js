@@ -214,7 +214,7 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
   }
 
   $scope.cmModel={string:'console.log();'};
-  $scope.tableParams = {};
+  //$scope.tableParams = new NgTableParams({}, {dataset: $scope.data_results});
   
   $scope.refreshCodemirror = true;
   $timeout(function(){

@@ -17,6 +17,10 @@ body {
     padding-bottom: 20px;
 }
 
+.full-container {
+    width: 90% !important;
+}
+
 .dropdown {
     cursor:pointer;
 }
@@ -95,6 +99,18 @@ h1, h2, h3, h4, h5, h6 {
     width:100%;
     padding-left:5px;
     color:white;
+    display:table;
+    table-layout: fixed;
+}
+
+.toolbar span {
+    display: table-cell;
+    text-align: center;
+}
+
+.toolbar.span:hover {
+    background-color:red;
+    color: blue;
 }
 
 .muted {
@@ -132,6 +148,7 @@ table {
 
 th, td {
     text-align: left;
+    height:20px;
 }
 
 tr:nth-child(even){background-color:lightgray; color:black}
@@ -239,7 +256,7 @@ th {
 
 /* Footer Styles */
 footer {
-    margin: 50px 0;
+    margin: 20px 0;
 }
 
 /* Responsive Styles */

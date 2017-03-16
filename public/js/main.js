@@ -261,7 +261,7 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
       console.log(sql);
 
 
-      $scope.cmModel.string = 'OVERWRITE';
+      //$scope.cmModel.string = 'OVERWRITE';
 
       //TODO: Refresh code mirror
       //$scope.cmModel.string.refresh(); // For code mirror editor

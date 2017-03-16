@@ -293,6 +293,7 @@ function Node(type, val)
 // ex Join(pi a,b(R), S) would output ["pi a,b(R)", "S"]
 function splitOnComma(q)
 {
+    //todo: fix to make sub binary operations not fuck it up
     if (q.split(",").length == 2)
     {
         return q.split(",");
@@ -368,14 +369,16 @@ function parseRho(str)
 }
 
 //TODO add conditions.
-function parseNJoin(str)
+function parseJoin(str)
 {
-    var spl = splitOnComma(str);
-    left = spl[0];
-    right = spl[1];
+    var condition = str.substring(0,str.indexOf("(")).trim();
+    var rest = str.substring(str.indexOf("(") + 1, str.lastIndexOf(")"));
+    var spl = splitOnComma(rest);
+    left = spl[0].trim();
+    right = spl[1].trim();
 
 
-    var node = new Node(TypeEnum.NJoin, "");
+    var node = new Node(TypeEnum.NJoin, condition);
     var subTreeLeft = createTree(left);
     var subTreeRight = createTree(right);
 
@@ -390,8 +393,8 @@ function parseNJoin(str)
 function parseUnion(str)
 {
     var spl = splitOnComma(str);
-    left = spl[0];
-    right = spl[1];
+    left = spl[0].trim();
+    right = spl[1].trim();
 
 
     var node = new Node(TypeEnum.Union, "");
@@ -410,8 +413,8 @@ function parseUnion(str)
 function parseIntersection(str)
 {
     var spl = splitOnComma(str);
-    left = spl[0];
-    right = spl[1];
+    left = spl[0].trim();
+    right = spl[1].trim();
 
 
     var node = new Node(TypeEnum.Intersect, "");
@@ -429,8 +432,8 @@ function parseIntersection(str)
 function parseSubtraction(str)
 {
     var spl = splitOnComma(str);
-    left = spl[0];
-    right = spl[1];
+    left = spl[0].trim();
+    right = spl[1].trim();
 
 
     var node = new Node(TypeEnum.Subtraction, "");
@@ -449,8 +452,8 @@ function parseSubtraction(str)
 function parseCross(str)
 {
     var spl = splitOnComma(str);
-    left = spl[0];
-    right = spl[1];
+    left = spl[0].trim();
+    right = spl[1].trim();
 
 
     var node = new Node(TypeEnum.Cross, "");
@@ -494,8 +497,8 @@ function createTree(q)
     else if (q.startsWith("\u2A1D") || q.startsWith("join"))
     {
         //TODO add conditions.
-        newq = q.substring(q.indexOf("(") + 1, q.lastIndexOf(")"));
-        return parseNJoin(newq);
+        newq = q.substring(q.indexOf(" "));
+        return parseJoin(newq);
     }
     else if (q.startsWith("\u222A") || q.startsWith("union"))
     {
@@ -605,6 +608,7 @@ var TypeEnum = {"Pi":0, "Sigma":1, "Rho":2, "NJoin":3, "Data":4,
 
 function NodeToSQL(node, subqueries, alias, schema)
 {
+    // todo HANDLE JOIN CORRECTLY
     // TODO handle multiple selects.
     var query = "";
     if (node.type == TypeEnum.Pi)
@@ -614,7 +618,7 @@ function NodeToSQL(node, subqueries, alias, schema)
         {
             query = select + subqueries[0];
         }
-        else if (node.children[0].children.length == 0 || node.children[0].type == TypeEnum.Cross)
+        else if (node.children[0].children.length == 0 || node.children[0].type == TypeEnum.Cross || node.children[0].type == TypeEnum.NJoin)
         {
             query = select + "FROM " + subqueries[0];
         }
@@ -624,22 +628,37 @@ function NodeToSQL(node, subqueries, alias, schema)
             alias++;
         }
     }
-    else if (node.type == TypeEnum.Sigma && node.parent.type != TypeEnum.Sigma)
+    else if (node.type == TypeEnum.Sigma)
     {
-        var conditions = node.value.replace(",", "AND");
-        query = "FROM " + subqueries[0] + "\nWHERE " + conditions;
-        if (node.parent.type != TypeEnum.Pi)
+        if (node.parent == null || node.parent.type != TypeEnum.Sigma)
         {
-            query = "SELECT DISTINCT *\n" + query;
-        }
-        if (node.children[0].type == TypeEnum.Sigma)
-        {
-            var curNode = node.children[0];
-            while (curNode.type = TypeEnum.Sigma)
+            var conditions = node.value.replace(",", " AND ");
+            if (node.children[0].type == TypeEnum.Sigma)
             {
-                conditions += curNode.value;
-                curNode = curNode.children[0]
+                var curNode = node.children[0];
+                while (curNode.type = TypeEnum.Sigma)
+                {
+                    conditions += " AND " + curNode.value;
+                    if (curNode.children[0].length > 0)
+                    {
+                        curNode = curNode.children[0];
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
             }
+            query = "FROM " + subqueries[0] + "\nWHERE " + conditions;
+            if (node.parent == null || node.parent.type != TypeEnum.Pi)
+            {
+                query = "SELECT DISTINCT *\n" + query;
+            }
+            
+        }
+        else
+        {
+            query = subqueries[0];
         }
     }
     else if (node.type == TypeEnum.Rho)
@@ -703,6 +722,7 @@ function NodeToSQL(node, subqueries, alias, schema)
     }
     else if (node.type == TypeEnum.NJoin)
     {
+        //todo HANDLE CONDITION FROM ALIASES
         if (node.children[0].type != TypeEnum.Data)
         {
             subqueries[0] = "(" + subqueries[0] + ") AS alias" + alias.toString();
@@ -713,7 +733,7 @@ function NodeToSQL(node, subqueries, alias, schema)
             subqueries[1] = "(" + subqueries[1] + ") AS alias" + alias.toString();
             alias++;
         }
-        query = subqueries[0] + " NATURAL JOIN " + subqueries[1];
+        query = subqueries[0] + " INNER JOIN " + subqueries[1] + " ON " + node.value;
     }
     else if (node.type == TypeEnum.Union)
     {

@@ -210,7 +210,8 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
   $scope.cmOption = {
     lineNumbers:true,
     indentWithTabs:true,
-    mode:'relationalAlgebra'
+    mode:'relationalAlgebra',
+    lineWrapping:true
   }
 
   $scope.cmModel={string:'console.log();'};
@@ -1267,7 +1268,8 @@ var b = TreeToSql(tree, "", 0, schema);
   $scope.cmOptionOptimize = {
     lineNumbers:true,
     indentWithTabs:true,
-    mode:'relationalAlgebra'
+    mode:'relationalAlgebra',
+    lineWrapping: true
   }
 
   $scope.cmModelOptimize={string:'consoleee.log();'};
@@ -1375,7 +1377,8 @@ var b = TreeToSql(tree, "", 0, schema);
   $scope.cmOptionConvertRa = {
     lineNumbers:true,
     indentWithTabs:true,
-    mode:'relationalAlgebra'
+    mode:'relationalAlgebra',
+    lineWrapping: true
   }
 
   $scope.cmModelConvertRa={string:'consolasdfdse.log();'};
@@ -1383,7 +1386,8 @@ var b = TreeToSql(tree, "", 0, schema);
   $scope.cmOptionConvertSql = {
     lineNumbers:true,
     indentWithTabs:true,
-    mode:'text/x-mysql'
+    mode:'text/x-mysql',
+    lineWrapping: true
   }
 
   $scope.cmModelConvertSql={string:'console.log(SQL);'};

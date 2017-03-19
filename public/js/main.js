@@ -192,7 +192,7 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
             chosen: true,
 
             font:{size:36, color:'white'},
-            borderWidth: 10            
+            borderWidth: 5      
         },
         
         layout: {

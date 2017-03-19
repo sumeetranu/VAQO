@@ -282,7 +282,7 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
 
   
 
-var TypeEnum = {"Pi":0, "Sigma":1, "Rho":2, "NJoin":3, "Data":4,
+var TypeEnum = {"Pi":0, "Sigma":1, "Rho":2, "Join":3, "Data":4,
  "Union":5, "Intersect":6, "Subtraction":7, "Cross":8}
 
 var Types = ["\u03C0", "\u03C3", "\u03C1", "\u2A1D", "Data"
@@ -292,6 +292,7 @@ function Node(type, val)
 {
     this.type = type;
     this.value = val;
+    this.data = [];
     this.parent = null;
     this.children = [];
 }
@@ -385,7 +386,7 @@ function parseJoin(str)
     right = spl[1].trim();
 
 
-    var node = new Node(TypeEnum.NJoin, condition);
+    var node = new Node(TypeEnum.Join, condition);
     var subTreeLeft = createTree(left);
     var subTreeRight = createTree(right);
 
@@ -609,14 +610,15 @@ function Node(type, val)
 var Types = ["\u03C0", "\u03C3", "\u03C1", "\u2A1D", "Data"
 , "\u222A", "\u2229", "-", "\u2A2F"]
 
-var TypeEnum = {"Pi":0, "Sigma":1, "Rho":2, "NJoin":3, "Data":4,
+var TypeEnum = {"Pi":0, "Sigma":1, "Rho":2, "Join":3, "Data":4,
  "Union":5, "Intersect":6, "Subtraction":7, "Cross":8}
 */
 
 function NodeToSQL(node, subqueries, alias, schema)
 {
-    // todo HANDLE JOIN CORRECTLY
+    // TODO HANDLE JOIN CORRECTLY
     // TODO handle multiple selects.
+    // TODO handle sigma (pi (R))
     var query = "";
     if (node.type == TypeEnum.Pi)
     {
@@ -625,7 +627,7 @@ function NodeToSQL(node, subqueries, alias, schema)
         {
             query = select + subqueries[0];
         }
-        else if (node.children[0].children.length == 0 || node.children[0].type == TypeEnum.Cross || node.children[0].type == TypeEnum.NJoin)
+        else if (node.children[0].children.length == 0 || node.children[0].type == TypeEnum.Cross || node.children[0].type == TypeEnum.Join)
         {
             query = select + "FROM " + subqueries[0];
         }
@@ -727,7 +729,7 @@ function NodeToSQL(node, subqueries, alias, schema)
 
         }
     }
-    else if (node.type == TypeEnum.NJoin)
+    else if (node.type == TypeEnum.Join)
     {
         //todo HANDLE CONDITION FROM ALIASES
         if (node.children[0].type != TypeEnum.Data)
@@ -882,7 +884,7 @@ function NodeToRA(node, subqueries)
     {
         query = Types[node.type] + " " + node.value + " (" + subqueries[0] + ")";
     }
-    else if (node.type == TypeEnum.NJoin || node.type == TypeEnum.Union || node.type == TypeEnum.Intersect || node.type == TypeEnum.Subtraction || node.type == TypeEnum.Cross)
+    else if (node.type == TypeEnum.Join || node.type == TypeEnum.Union || node.type == TypeEnum.Intersect || node.type == TypeEnum.Subtraction || node.type == TypeEnum.Cross)
     {
         var val = node.value;
         if (val != "")
@@ -1146,9 +1148,320 @@ function BreakUpSelects(node)
     return node;
 }
 
-function OptimizeTree(node)
+/*
+var TypeEnum = {"Pi":0, "Sigma":1, "Rho":2, "Join":3, "Data":4,
+ "Union":5, "Intersect":6, "Subtraction":7, "Cross":8}
+
+schema["R"] = [5, ["a", "int"],["b", "string"], ["c", "string"]]
+schema["S"] = [5, ["b", "string"], ["d", "int"]]
+schema["T"] = [4, ["b", "string"], ["d", "int"]]
+schema["Person"] = [5, ["firstname", "string"], ["lastname", "string"], ["age", "int"]];
+
+*/
+function FillTreeData(node, schema)
 {
-    return BreakUpSelects(node);
+    for (var i = 0; i < node.children.length; i++)
+    {
+        var newChild = FillTreeData(node.children[i], schema);
+        node.children[i] = newChild;
+    }
+    var newData = null;
+    if (node.type == TypeEnum.Pi)
+    {
+        var data = node.children[0].data;
+        var cols = node.value.split(',');
+        newData = [data[0]];
+        //trim and make all the cols lower case;
+        for (var i = 0; i < cols.length; i++)
+        {
+            cols[i] = cols[i].trim().toLowerCase();
+        }
+        
+        //check if the columns are in the data
+        for (var i = 1; i < data.length; i++)
+        {
+            if (cols.indexOf(data[i][0].toLowerCase()) >= 0)
+            {
+                newData.push(data[i]);
+            }
+        }
+        //if the columns are not in the data then throw an exception
+        if (newData.lenth - 1 != cols.length)
+        {
+            //todo Throw Exception
+        }
+
+        // set the new data
+        node.data = newData;
+    }
+    else if (node.type == TypeEnum.Sigma)
+    {
+        node.data = node.children[0].data;
+    }
+    else if (node.type == TypeEnum.Rho)
+    {
+        var changeString = node.value.replace(/\s/g,'');
+        if (changeString.includes("\u27F5"))
+        {
+            var changes = changeString.split(',');
+            newData = node.children[0].data;
+            for (var i = 0; i < changes.length; i++)
+            {
+                var change = changes[i].split('\u27F5');
+                change[0] = change[0].trim().toLowerCase();
+                change[1] = change[1].trim().toLowerCase();
+                for (var j = 1; j < newData.length; j++)
+                {
+                    if (newData[j][0].toLowerCase() == change[1])
+                    {
+                        newData[j][0] = change[0];
+                        break;
+                    }
+                    else if (j == newData.length - 1)
+                    {
+                        //todo throw exception;
+                    }
+                }
+            }
+            node.data = newData;
+        }
+        else
+        {
+            node.data = node.children[0].data;
+        }
+        
+    }
+    else if (node.type == TypeEnum.Join)
+    {
+        var ldata = node.children[0].data;
+        var rdata = node.children[1].data;
+
+        newData = [];
+        //max size of a join is the size of the smaller table
+        newData.push(Math.min(ldata[0], rdata[0]));
+        //get left cols
+        for(var i = 1; i < ldata.length; i++)
+        {
+            newData.push(ldata[i]);
+        }
+        //get right cols
+        for(var i = 1; i < rdata.length; i++)
+        {
+            newData.push(rdata[i]);
+        }
+        node.data = newData;
+    }
+    else if (node.type == TypeEnum.Data)
+    {
+        node.data = schema[node.value.toLowerCase()];
+    }
+    else if (node.type == TypeEnum.Union)
+    {
+        var ldata = node.children[0].data;
+        var rdata = node.children[1].data;
+
+        node.data = ldata;
+        node.data[0] = ldata[0] + rdata[0];
+    }
+    else if (node.type == TypeEnum.Intersect)
+    {
+        var ldata = node.children[0].data;
+        var rdata = node.children[1].data;
+
+        node.data = ldata;
+        node.data[0] = Math.min(ldata[0], rdata[0]);
+    }
+    else if (node.type == TypeEnum.Subtraction)
+    {
+        var ldata = node.children[0].data;
+        node.data = ldata;
+    }
+    else if (node.type == TypeEnum.Cross)
+    {
+        var ldata = node.children[0].data;
+        var rdata = node.children[1].data;
+
+        newData = [];
+        //max size of a join is the size of the smaller table
+        newData.push(ldata[0]*rdata[0]);
+        //get left cols
+        for(var i = 1; i < ldata.length; i++)
+        {
+            newData.push(ldata[i]);
+        }
+        //get right cols
+        for(var i = 1; i < rdata.length; i++)
+        {
+            newData.push(rdata[i]);
+        }
+        node.data = newData;
+    }
+
+    
+    return node;
+}
+
+function PushDownSelects(node,schema, changed)
+{
+    if (node.type == TypeEnum.Sigma)
+    {
+        var data = node.data;
+        var childData = node.children[0].data;
+
+        // if sigma c (pi a1, a2 (R)) is valid, then pi a1, a2 (sigma c (R)) is also valid
+        if (node.children[0].type == TypeEnum.Pi)
+        {
+            changed = true;
+            var childNode = node.children[0];
+            var grandChildren = childNode.children;
+            childNode.parent = node.parent;
+            childNode.children = [node];
+            node.parent = childNode;
+            node.children = grandChildren;
+            node = childNode;
+        }
+        if (node.children[0].type == TypeEnum.Join)
+        {
+            var conditions = node.value.replace(/ or /g, " and ").split(' and ');
+            var attributes = [];
+            for (var  i = 0; i < conditions.length; i++)
+            {
+                var condition = conditions[i];
+                condition = condition.replace(/!=/g, "=").replace(/>=/g, "=").replace(/<=/g, "=").replace(/>/g, "=").replace(/</g, "=");
+                var curAtts = condition.split("=");
+                var condAtts = []
+                for (var j = 0; j < curAtts.length; j++)
+                {
+                    var att = curAtts[j].trim();
+                    if (isNaN(att) && att.indexOf("'") == -1)
+                    {
+                        condAtts.push(att);
+                    }
+                } 
+                attributes.push(condAtts);
+            }
+            
+            //check if all attributes only belong on one side of the join
+            var ldata = node.children[0].children[0].data;
+            var rdata = node.children[0].children[1].data;
+            var allLeft = true;
+            for (var  i = 0; i < attributes.length && allLeft; i++)
+            {
+                var c = attributes[i];
+                for (var j = 0; j < c.length && allLeft; j++)
+                {
+                    for (var k = 1; k < ldata.length; k++)
+                    {
+                        if (c[j] == ldata[k][0])
+                        {
+                            break;
+                        }
+                        else if (k == ldata.length-1)
+                        {
+                            allLeft = false;
+                        }
+                    }
+                }
+            }
+            if (allLeft)
+            {
+                changed = true;
+                var childNode = node.children[0];
+                var grandChild = childNode.children[0];
+                childNode.parent = node.parent;
+                childNode.children[0] = node;
+                node.parent = childNode;
+                node.children = [grandChild];
+                node = childNode; 
+            }
+            else
+            {
+                var allRight = true;
+                for (var  i = 0; i < attributes.length && allRight; i++)
+                {
+                    var c = attributes[i];
+                    for (var j = 0; j < c.length && allRight; j++)
+                    {
+                        for (var k = 1; k < rdata.length; k++)
+                        {
+                            if (c[j] == rdata[k][0])
+                            {
+                                break;
+                            }
+                            else if (k == rdata.length-1)
+                            {
+                                allRight = false;
+                            }
+                        }
+                    }
+                }
+                if (allRight)
+                {
+                    changed = true;
+                    var childNode = node.children[0];
+                    var grandChild = childNode.children[1];
+                    childNode.parent = node.parent;
+                    childNode.children[1] = node;
+                    node.parent = childNode;
+                    node.children = [grandChild];
+                    node = childNode; 
+                }
+            }
+        }
+        //sigma c ( U (R, S)) => U (sigma c (R), sigma c (S))
+        if (node.children[0].type == TypeEnum.Union || node.children[0].type == TypeEnum.Intersect || node.children[0].type == TypeEnum.Subtraction)
+        {
+            changed = true;
+            var childNode = node.children[0];
+            var lGrandChild = childNode.children[0];
+            var rGrandChild = childNode.children[1];
+            childNode.parent = node.parent;
+            childNode.children[0] = node;
+            var newNode = new Node(node.type, node.value);
+            childNode.children[1] = newNode;
+            node.parent = childNode;
+            node.children = [lGrandChild];
+            newNode.parent = childNode;
+            newNode.children = [rGrandChild]
+            node = childNode;
+        }
+    }
+    for (var i = 0; i < node.children.length; i++)
+    {
+        var out = PushDownSelects(node.children[i], schema, changed);
+        newChild = out[0];
+        changed = out[1];
+        node.children[i] = newChild;
+    }
+    return [node, changed];
+}
+
+function CopyTree(node)
+{
+    var newNode = new Node(node.type, node.value);
+    for (var i = 0; i < node.children.length; i++)
+    {
+        var newChild = CopyTree(node.children[i]);
+        newChild.parent = newNode;
+        newNode.children.push(newChild);
+    }
+    return newNode;
+}
+
+function OptimizeTree(tree, schema)
+{
+    tree = CopyTree(tree);
+    tree = BreakUpSelects(tree);
+    var cont = true
+    while (cont)
+    {
+        tree = FillTreeData(tree, schema);
+        var out = PushDownSelects(tree, schema, false);
+        tree = out[0];
+        cont = out[1];
+    }
+    
+    return tree;
 }
 
 query = $scope.cmModel.string;
@@ -1310,64 +1623,40 @@ var b = TreeToSql(tree, "", 0, schema);
     newq = query.replace(/[^\x21-\x7E\u03C0\u03C1\u03C3\u2A1D\u222A\u2229\u2A2F\u27F5\u2227\u2228]+/g, ' ');
     newq = newq.replace(/^\s+|\s+$/g, '').trim();
     var tree = createTree(newq);
-    
-    tree = OptimizeTree(tree);
+
+    schema = {};
+    schema["person"] = [7, ["firstname", "string"], ["lastname", "string"], ["age", "int"], ["MID", "int"]];
+    schema["languages"] = [3, ["most_proficient", "string"], ["ID", "int"]]
+    var optTree = OptimizeTree(tree, schema);
 
     // Temporarily setting the results to <temp results>
     $scope.optimizedQueryString = "pi firstname, lastname (join id=mid(sigma firstname = 'Chris' (Person), sigma most_proficient = 'Python' (languages)))";
 
     // Update graph results
     $scope.showGraphs = true;
-    updateAllNodes();
+    updateAllNodes(tree, optTree);
   }
 
   var originalNetwork = new vis.Network(originalContainer, $scope.originalData, $scope.options);
   var optimizedNetwork = new vis.Network(optimizedContainer, $scope.optimizedData, $scope.options);
 
-  function updateAllNodes(){
+  function updateAllNodes(tree, optTree){
     /* visjs data for the original graphs */
-    // TODO: Hardcoded to an example for now - needs to be changed!
-    var originalNodes = new vis.DataSet([
-            {id: 0, label: 'π', title: 'firstname, lastname'},
-            {id: 1, label: 'σ', title: 'id = mid and firstname = test'},
-            {id: 2, label: '⨯', title: ''},
-            {id: 3, label: 'person', title: ''},
-            {id: 4, label: 'languages', title: ''}
-        ]);
 
-        // Creating new edges
-        var originalEdges = new vis.DataSet([
-            {from: 0, to: 1},
-            {from: 1, to: 2},
-            {from: 2, to: 3},
-            {from: 2, to: 4},
-            {from: 2, to: 6}
-        ]);
 
-        // Updating the dataset for the network
-        originalNetwork.setData({
-            nodes: originalNodes,
-            edges: originalEdges
-        });
+    var graph = TreeToGraphRun(tree);
+    var originalNodes = new vis.DataSet(graph[0]);
+    var originalEdges = new vis.DataSet(graph[1]);
 
-    /* visjs data for the optimized graph */
-    var optimizedNodes = new vis.DataSet([
-        {id: 0, label: 'π', title: 'firstname, lastname'},
-        {id: 1, label: '⨝', title: 'id = mid'},
-        {id: 2, label: 'σ', title: 'firstname = test'},
-        {id: 3, label: 'person', title: ''},
-        {id: 4, label: 'σ', title:"most_proficient = 'Python'"},
-        {id: 5, label: 'languages', title: ''}
-    ]);
+    // Updating the dataset for the network
+    originalNetwork.setData({
+        nodes: originalNodes,
+        edges: originalEdges
+    });
 
-    // create an array with edges
-    var optimizedEdges = new vis.DataSet([
-        {from: 0, to: 1},
-        {from: 1, to: 2},
-        {from: 2, to: 3},
-        {from: 1, to: 4},
-        {from: 4, to: 5}
-    ]);
+    var optGraph = TreeToGraphRun(optTree);
+    var optimizedNodes = new vis.DataSet(optGraph[0]);
+    var optimizedEdges = new vis.DataSet(optGraph[1]);
 
     optimizedNetwork.setData({
         nodes: optimizedNodes,

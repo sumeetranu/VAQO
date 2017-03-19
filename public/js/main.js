@@ -182,24 +182,30 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
     };
     $scope.options = {
         nodes: {
-            color:{background:'#3D5273'},
-            font:{color:'white'},
+            color:{
+                background:'#3D5273', 
+                border:'#3D5273',
+                highlight: {border: '#670000', background:'#670000'},
+                hover: {border: '#670000'}
+            },
             shape:'box',
-            font:{size:18, color:'white'}
+            chosen: true,
+
+            font:{size:36, color:'white'},
+            borderWidth: 10            
         },
+        
         layout: {
             hierarchical: {
                 direction: "UD",
-                sortMethod: "directed"
+                sortMethod: "directed",
+                edgeMinimization:true
             }
         },
         interaction: {
             dragNodes :false,
             navigationButtons:true,
             keyboard:false
-        },
-        physics: {
-            enabled: false
         }
     };
 
@@ -214,7 +220,7 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
     lineWrapping:true
   }
 
-  $scope.cmModel={string:'console.log();'};
+  $scope.cmModel={string:''};
   //$scope.tableParams = new NgTableParams({}, {dataset: $scope.data_results});
   
   $scope.refreshCodemirror = true;
@@ -1244,6 +1250,9 @@ var b = TreeToSql(tree, "", 0, schema);
         edges: edges
     });
 
+    console.log(nodes);
+    console.log(edges);
+
     return tree;
 
   }
@@ -1305,7 +1314,7 @@ var b = TreeToSql(tree, "", 0, schema);
     tree = OptimizeTree(tree);
 
     // Temporarily setting the results to <temp results>
-    $scope.optimizedQueryString = '<temp results>';
+    $scope.optimizedQueryString = "pi firstname, lastname (join id=mid(sigma firstname = 'Chris' (Person), sigma most_proficient = 'Python' (languages)))";
 
     // Update graph results
     $scope.showGraphs = true;
@@ -1317,22 +1326,21 @@ var b = TreeToSql(tree, "", 0, schema);
 
   function updateAllNodes(){
     /* visjs data for the original graphs */
-
+    // TODO: Hardcoded to an example for now - needs to be changed!
     var originalNodes = new vis.DataSet([
-            {id: 1, label: 'Node 1', title: 'Node 1'},
-            {id: 2, label: 'Node 2', title: 'Node 2'},
-            {id: 3, label: 'Node 3', title: 'Node 3'},
-            {id: 4, label: 'Node 4', title: 'Node 4'},
-            {id: 5, label: 'Node 5', title: 'Node 5'},
-            {id: 6, label: 'Node 6', title: 'Node 6'}
+            {id: 0, label: 'π', title: 'firstname, lastname'},
+            {id: 1, label: 'σ', title: 'id = mid and firstname = test'},
+            {id: 2, label: '⨯', title: ''},
+            {id: 3, label: 'person', title: ''},
+            {id: 4, label: 'languages', title: ''}
         ]);
 
         // Creating new edges
         var originalEdges = new vis.DataSet([
-            {from: 1, to: 3},
+            {from: 0, to: 1},
             {from: 1, to: 2},
+            {from: 2, to: 3},
             {from: 2, to: 4},
-            {from: 2, to: 5},
             {from: 2, to: 6}
         ]);
 
@@ -1344,21 +1352,21 @@ var b = TreeToSql(tree, "", 0, schema);
 
     /* visjs data for the optimized graph */
     var optimizedNodes = new vis.DataSet([
-        {id: 1, label: 'Node 1', title: 'Node 1'},
-        {id: 2, label: 'Node 2', title: 'Node 2'},
-        {id: 3, label: 'Node 3', title: 'Node 3'},
-        {id: 4, label: 'Node 4', title: 'Node 4'},
-        {id: 5, label: 'Node 5', title: 'Node 5'},
-        {id: 6, label: 'Node 6', title: 'Node 6'}
+        {id: 0, label: 'π', title: 'firstname, lastname'},
+        {id: 1, label: '⨝', title: 'id = mid'},
+        {id: 2, label: 'σ', title: 'firstname = test'},
+        {id: 3, label: 'person', title: ''},
+        {id: 4, label: 'σ', title:"most_proficient = 'Python'"},
+        {id: 5, label: 'languages', title: ''}
     ]);
 
     // create an array with edges
     var optimizedEdges = new vis.DataSet([
-        {from: 1, to: 3},
+        {from: 0, to: 1},
         {from: 1, to: 2},
-        {from: 2, to: 4},
-        {from: 2, to: 5},
-        {from: 2, to: 6},
+        {from: 2, to: 3},
+        {from: 1, to: 4},
+        {from: 4, to: 5}
     ]);
 
     optimizedNetwork.setData({

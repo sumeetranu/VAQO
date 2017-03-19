@@ -106,6 +106,7 @@ h1, h2, h3, h4, h5, h6 {
 .toolbar span {
     display: table-cell;
     text-align: center;
+    font-size: 18px !important;
 }
 
 .toolbar.span:hover {
@@ -148,7 +149,7 @@ table {
 
 th, td {
     text-align: left;
-    height:20px;
+    height:10px;
 }
 
 tr:nth-child(even){background-color:lightgray; color:black}
@@ -415,3 +416,20 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 .tab2 {
     padding-left:90px;
 }
+
+/*Add this back in if you decide to style the span tooltip/title*/
+/*span[title]:hover:after {
+  content: attr(title);
+  padding: 8px 16px;
+  color: #333;
+  position: relative;  
+  top: -20px;
+  white-space: nowrap;
+  z-index: 20px;
+  background-image: -moz-linear-gradient(top, #eeeeee, #cccccc);
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #eeeeee),color-stop(1, #cccccc));
+  background-image: -webkit-linear-gradient(top, #eeeeee, #cccccc);
+  background-image: -moz-linear-gradient(top, #eeeeee, #cccccc);
+  background-image: -ms-linear-gradient(top, #eeeeee, #cccccc);
+  background-image: -o-linear-gradient(top, #eeeeee, #cccccc);
+}*/

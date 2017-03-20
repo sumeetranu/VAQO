@@ -1320,7 +1320,7 @@ function PushDownSelects(node,schema, changed)
             node.children = grandChildren;
             node = childNode;
         }
-        if (node.children[0].type == TypeEnum.Join)
+        if (node.children[0].type == TypeEnum.Join || node.children[0].type == TypeEnum.Cross)
         {
             var conditions = node.value.replace(/ or /g, " and ").split(' and ');
             var attributes = [];
@@ -1448,6 +1448,66 @@ function CopyTree(node)
     return newNode;
 }
 
+function CombineSelectCross(node, schema)
+{
+    if (node.type == TypeEnum.Sigma && node.children[0].type == TypeEnum.Cross)
+    {
+        //sigmas are separated so there should only be one condition
+        var condition = node.value;
+        condition = condition.replace(/!=/g, "=").replace(/>=/g, "=").replace(/<=/g, "=").replace(/>/g, "=").replace(/</g, "=");
+        var atts = condition.split("=");
+        var rAt = 0;
+        var inLeft = false;
+        var inRight = false;
+        var ldata = node.children[0].children[0].data;
+        var rdata = node.children[0].children[1].data;
+        for (var i = 1; i < ldata.length; i++)
+        {
+            if (atts[0].trim() == ldata[i][0].toLowerCase())
+            {
+                rAt = 1;
+                inLeft = true;
+                break;
+            }
+            else if (atts[1].trim() == ldata[i][0].toLowerCase())
+            {
+                rAt = 0;
+                inLeft = true;
+                break;
+            }
+        }
+        if (inLeft)
+        {
+            for (var i = 1; i < rdata.length; i++)
+            {
+                if (atts[rAt].trim() == rdata[i][0].toLowerCase())
+                {
+                    inRight = true;
+                    break;
+                }
+            }
+            if (inRight)
+            {
+                changed = true;
+                var childNode = node.children[0];
+                childNode.parent = node.parent;
+                childNode.type = TypeEnum.Join;
+                childNode.value = node.value;
+                node = childNode; 
+            }
+        }
+        
+
+    }
+    for (var i = 0; i < node.children.length; i++)
+    {
+        var newChild = CombineSelectCross(node.children[i]);
+        newChild.parent = node;
+        node.children[i] = newChild;
+    }
+    return node;
+}
+
 function OptimizeTree(tree, schema)
 {
     tree = CopyTree(tree);
@@ -1460,7 +1520,8 @@ function OptimizeTree(tree, schema)
         tree = out[0];
         cont = out[1];
     }
-    
+    tree = FillTreeData(tree, schema);
+    tree = CombineSelectCross(tree,schema)
     return tree;
 }
 

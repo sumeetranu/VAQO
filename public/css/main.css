@@ -306,6 +306,12 @@ footer {
     height:63% !important;
 }
 
+.panel-blue {
+    background-color: #34495e;
+    color: white;
+    border: 1px solid #34495e;
+}
+
 div.vis-network div.vis-navigation div.vis-button {
     width:30px;
     height:30px;

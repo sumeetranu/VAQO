@@ -1720,9 +1720,9 @@ var b = TreeToSql(tree, "", 0, schema);
     schema["person"] = [7, ["firstname", "string"], ["lastname", "string"], ["age", "int"], ["MID", "int"]];
     schema["languages"] = [3, ["most_proficient", "string"], ["ID", "int"]]
     var optTree = OptimizeTree(tree, schema);
-
+    console.log(optTree);
     // Temporarily setting the results to <temp results>
-    $scope.optimizedQueryString = "pi firstname, lastname (join id=mid(sigma firstname = 'Chris' (Person), sigma most_proficient = 'Python' (languages)))";
+    $scope.optimizedQueryString = TreeToRA(optTree, "", 0, schema); 
 
     // Update graph results
     $scope.showGraphs = true;
@@ -1781,7 +1781,7 @@ var b = TreeToSql(tree, "", 0, schema);
 
   $scope.cmModelConvertSql={string:'console.log(SQL);'};
   
-
+  $scope.convertedSqlString = 'Enter a relational algebra query above to convert to SQL.';
   $scope.convertToSql = function(){
     console.log('Convert to sql');
 
@@ -1801,10 +1801,13 @@ var b = TreeToSql(tree, "", 0, schema);
     var sql = out[0];
 
     console.log(sql);
-
+    $scope.convertedSqlString = sql;
+    console.log($scope.convertedSqlString);
     updateSqlEditor( $scope.cmModelConvertRa);
             
   }
+
+  $scope.convertedRelString = 'Enter a SQL query above to convert to Relational Algebra.';
 
   $scope.convertToRelAlg = function(){
     console.log('Convert to rel alg');
@@ -1818,6 +1821,7 @@ var b = TreeToSql(tree, "", 0, schema);
     var Ra = TreeToRA(tree, "", 0, schema);
 
     console.log(Ra);
+    $scope.convertedRelString = Ra;
     updateRelAlgEditor($scope.cmModelConvertRa);
 
   }

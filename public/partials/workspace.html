@@ -200,7 +200,6 @@
                     <strong><center>Relational Algebra</center></strong>
                     <br>
                     <div class = "toolbar">
-                        <span class="btn btn-compact">π</span>
                             <span class="btn btn-compact" title="pi">π</span>
                             <span class="btn btn-compact" title="sigma">σ</span>
                             <span class="btn btn-compact" title="rho">ρ</span>
@@ -232,8 +231,13 @@
                         
                     </div>
                     <br>
-                    <div style="text-align:right"><button class="btn btn-red" ng-click="convertToSql()">Convert to SQL</button></div>
+                    <div style="text-align:center"><button class="btn btn-red" ng-click="convertToSql()">Convert to SQL</button></div>
                     <br>
+                    <div class="panel panel-default panel-blue">
+                        <div class="panel-body">
+                            <p ng-bind="convertedSqlString"></p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- SQL Box ########################################################### -->    
@@ -242,7 +246,6 @@
                     <strong><center>SQL</center></strong>
                     <br>
                     <div class = "toolbar">
-                        <span class="btn btn-compact">π</span>
                             <span class="btn btn-compact" title="pi">π</span>
                             <span class="btn btn-compact" title="sigma">σ</span>
                             <span class="btn btn-compact" title="rho">ρ</span>
@@ -273,8 +276,13 @@
                     </div>
 
                     <br>
-                    <div style="text-align:right"><button class="btn btn-red" ng-click="convertToRelAlg()">Convert to Relational Algebra</button></div>
+                    <div style="text-align:center"><button class="btn btn-red" ng-click="convertToRelAlg()">Convert to Relational Algebra</button></div>
                     <br>
+                    <div class="panel panel-default panel-blue">
+                        <div class="panel-body">
+                            <p ng-bind="convertedRelString"></p>
+                        </div>
+                    </div>
                 </div>
 
                 </div>

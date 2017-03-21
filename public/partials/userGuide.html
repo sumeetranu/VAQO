@@ -17,13 +17,12 @@
 
         <div class="col-lg-12">
 
-            <h2 class="toggle-heading" data-toggle="collapse" data-target="#landingPage" ng-click="heading1=!heading1">
+            <h3 class="toggle-heading" data-toggle="collapse" data-target="#landingPage" ng-click="heading1=!heading1">
                 <i class="fa" ng-class="(heading1) ? 'fa-caret-down': 'fa-caret-right'"></i> 1 Landing Page and Navigation
-            </h2>
+            </h3>
             <div id="landingPage" class="collapse tab1">
             <p>
-                The landing page asks where you want your database data to come from: the test database,
-                or an import from an external database. 
+                The landing page links you to the workspace, where you can run, optimize and convert queries.
             </p>
             <p>
                 The navigation bar consists of 5 elements:
@@ -41,7 +40,8 @@
             </ol>
             </div>
 
-            <h2 class="toggle-heading" data-toggle="collapse" data-target="#useTestDatabase" ng-click="heading2=!heading2">
+            <!--Removed test DB/import DB options for now-->
+            <!--<h2 class="toggle-heading" data-toggle="collapse" data-target="#useTestDatabase" ng-click="heading2=!heading2">
                 <i class="fa" ng-class="(heading2) ? 'fa-caret-down': 'fa-caret-right'"></i> 2 Use Test Database
             </h2>
             <div id="useTestDatabase" class="collapse tab1">
@@ -78,10 +78,10 @@
                     If you want to modify the database at any point, click on the "Database" button on the Workspace page.
                     This will take you back to the Import External Database page where you can enter the new SQL dump.
                 </p>
-            </div>
+            </div>-->
             
-            <h2 class="toggle-heading" data-toggle="collapse" data-target="#workspace" ng-click="heading4=!heading4">
-                <i class="fa" ng-class="(heading4) ? 'fa-caret-down': 'fa-caret-right'"></i> 4 Workspace
+            <!--<h2 class="toggle-heading" data-toggle="collapse" data-target="#workspace" ng-click="heading4=!heading4">
+                <i class="fa" ng-class="(heading4) ? 'fa-caret-down': 'fa-caret-right'"></i> 2 Workspace
             </h2>
             <div id="workspace" class="collapse tab1"> 
                 <p> 
@@ -96,11 +96,10 @@
                 <br>
                 <p>
                     You can toggle between the three tabs: Run, Optimize and Convert. The Database button allows you to
-                    view the test database if you chose to use the test database or allows you to change the imported
-                    SQL dump if you chose to import the database.
-                </p>
+                    view the test database schema.
+                </p>-->
                 <h3 class="toggle-heading" data-toggle="collapse" data-target="#run" ng-click="heading41=!heading41">
-                    <i class="fa" ng-class="(heading41) ? 'fa-caret-down': 'fa-caret-right'"></i> 4.1 Run
+                    <i class="fa" ng-class="(heading41) ? 'fa-caret-down': 'fa-caret-right'"></i> 2 Run
                 </h3>
                 <div id="run" class="collapse tab1">
                     <p>
@@ -119,7 +118,7 @@
                 </div>
 
                 <h3 class="toggle-heading" data-toggle="collapse" data-target="#optimize" ng-click="heading42=!heading42">
-                    <i class="fa" ng-class="(heading42) ? 'fa-caret-down': 'fa-caret-right'"></i> 4.2 Optimize
+                    <i class="fa" ng-class="(heading42) ? 'fa-caret-down': 'fa-caret-right'"></i> 3 Optimize
                 </h3>
                 <div id="optimize" class="collapse tab1">
                     <p>
@@ -138,7 +137,7 @@
                 </div>
 
                 <h3 class="toggle-heading" data-toggle="collapse" data-target="#convert" ng-click="heading43=!heading43">
-                    <i class="fa" ng-class="(heading43) ? 'fa-caret-down': 'fa-caret-right'"></i> 4.3 Convert
+                    <i class="fa" ng-class="(heading43) ? 'fa-caret-down': 'fa-caret-right'"></i> 4 Convert
                 </h3>
                 <div id="convert" class="collapse tab1">
                     <p>

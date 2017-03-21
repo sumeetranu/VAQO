@@ -40,9 +40,17 @@ app.get('/queryDatabase', function(req, res){
 	dataDictionary = [];  
 	dataResults = {dataColumns:"", valueDictionary:""};
 
+
 	request = new Request(statement, function(err, rowCount) {  
 		if (err) {  
-			console.log('Error: ' + err);
+			console.log(statement);
+			if(statement == 'select distinct * from ') {
+				console.log('no data error');
+				res.status(500).send({error: {message: 'Empty query. Enter a valid query in editor to see results.'}});
+				return;
+			}
+			res.status(500).send({error: err});
+			return;
 		} else {
 			//Add query result and column names to json object.
 			//Remove extra spaces in column names and remove empty column nodes created by split.
@@ -51,7 +59,10 @@ app.get('/queryDatabase', function(req, res){
 			dataResults["valueDictionary"] = dataDictionary;
 
 			//Send data back to directives.
+			console.log(dataResults);
+			
 			res.send(dataResults);
+			return;
 		}  
 
 	});

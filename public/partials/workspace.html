@@ -80,10 +80,12 @@
                     </div>
 
                     <div class="col-sm-6" style="height:100%">
-                        <!--<h4 style="text-align:center" class="red-text">Results</h4>-->
-                        <!--<p style="vertical-align:center">Run a query to see the results.</p>-->
-                        <p ng-if="!showGraph">Run a query to view results. </p>
-                        <div style = "width: 100%; height: 30%; overflow:auto;">
+                        <div ng-if="!showGraph" ng-class="{'errorClass' : runMessageError}" class="panel panel-default">
+                            <div class="panel-body">
+                                <p ng-bind="runMessage"></p>
+                            </div>
+                        </div>
+                        <div ng-if="showGraph" style = "width: 100%; height: 30%; overflow:auto;">
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -105,7 +107,7 @@
                         <br>
 
                         <!-- Visjs graph - graph connection here, but data and options can be modified in the run directive -->
-                        <div ng-show="showGraph" id="mynetwork" style="height:63% !important;"></div>
+                        <div ng-show="showTree" id="mynetwork" class="runGraph"></div>
                         <script type="text/javascript">
                             var container = document.getElementById('mynetwork');
                         </script>  

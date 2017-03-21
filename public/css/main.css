@@ -296,6 +296,16 @@ footer {
   font-size: 1.5em;
 }
 
+.errorClass {
+    background-color: #670000;
+    color: white;
+    border: 1px solid #670000;
+}
+
+.runGraph {
+    height:63% !important;
+}
+
 div.vis-network div.vis-navigation div.vis-button {
     width:30px;
     height:30px;

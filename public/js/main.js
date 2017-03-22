@@ -297,19 +297,52 @@ function Node(type, val)
     this.children = [];
 }
 
+//gets ranges where commas wont be checked.
+function GetPiRhoRanges(str)
+{
+    loc = -1;
+    ranges = [];
+    while (str.indexOf("pi ", loc + 1) >= 0)
+    {
+        loc = str.indexOf("pi ", loc + 1);
+        paren = str.indexOf("(", loc);
+        ranges.push([loc, paren]);
+    }
+    loc = -1;
+    while (str.indexOf("rho ", loc + 1) >= 0)
+    {
+        loc = str.indexOf("rho ", loc + 1);
+        paren = str.indexOf("(", loc);
+        ranges.push([loc, paren]);
+    }
+    return ranges;
+}
+
+//checks if current index is in a range in the list of ranges.
+function InARange(ind, ranges)
+{
+    for (var i = 0; i < ranges.length; i++)
+    {
+        if (ind > ranges[i][0] && ind < ranges[i][1])
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 //within a binary operation splits the operation into the two sub operations
 // ex Join(pi a,b(R), S) would output ["pi a,b(R)", "S"]
 function splitOnComma(q)
 {
-    //todo: fix to make sub binary operations not fuck it up
     if (q.split(",").length == 2)
     {
         return q.split(",");
     }
     else
     {
-        firstP = false;
-        ct = 0
+        var ranges = GetPiRhoRanges(q)
+        var ct = 0
         for (i = 0; i < q.length; i++)
         {
             if (q[i] == '(')
@@ -321,7 +354,7 @@ function splitOnComma(q)
             {
                 ct--;
             }
-            else if (firstP && ct == 0 && q[i] == ",")
+            else if (!InARange(i, ranges) && ct == 0 && q[i] == ",")
             {
                 lst = [];
                 lst.push(q.substring(0,i).trim());
@@ -360,8 +393,6 @@ function parseSelect(str)
     node.children.push(subTree);
     return node;
 }
-
-//TODO handle conditions
 function parseRho(str)
 {
     var rename = str.substring(0,str.indexOf("(")).trim();
@@ -376,14 +407,17 @@ function parseRho(str)
     return node;
 }
 
-//TODO add conditions.
 function parseJoin(str)
 {
     var condition = str.substring(0,str.indexOf("(")).trim();
     var rest = str.substring(str.indexOf("(") + 1, str.lastIndexOf(")"));
     var spl = splitOnComma(rest);
-    left = spl[0].trim();
-    right = spl[1].trim();
+    if (spl.length != 2)
+    {
+        throw "Join requires two arguments. " + str;
+    }
+    var left = spl[0].trim();
+    var right = spl[1].trim();
 
 
     var node = new Node(TypeEnum.Join, condition);
@@ -401,9 +435,16 @@ function parseJoin(str)
 function parseUnion(str)
 {
     var spl = splitOnComma(str);
-    left = spl[0].trim();
-    right = spl[1].trim();
 
+    if (spl.length != 2)
+    {
+        throw "Union requires two arguments. " + str;
+    }
+
+    var left = spl[0].trim();
+    var right = spl[1].trim();
+
+    
 
     var node = new Node(TypeEnum.Union, "");
     var subTreeLeft = createTree(left);
@@ -421,8 +462,14 @@ function parseUnion(str)
 function parseIntersection(str)
 {
     var spl = splitOnComma(str);
-    left = spl[0].trim();
-    right = spl[1].trim();
+
+    if (spl.length != 2)
+    {
+        throw "Intersect requires two arguments. " + str;
+    }
+
+    var left = spl[0].trim();
+    var right = spl[1].trim();
 
 
     var node = new Node(TypeEnum.Intersect, "");
@@ -440,9 +487,13 @@ function parseIntersection(str)
 function parseSubtraction(str)
 {
     var spl = splitOnComma(str);
-    left = spl[0].trim();
-    right = spl[1].trim();
+    var left = spl[0].trim();
+    var right = spl[1].trim();
 
+    if (spl.length != 2)
+    {
+        throw "Subtract requires two arguments. " + str;
+    }
 
     var node = new Node(TypeEnum.Subtraction, "");
     var subTreeLeft = createTree(left);
@@ -460,8 +511,13 @@ function parseSubtraction(str)
 function parseCross(str)
 {
     var spl = splitOnComma(str);
-    left = spl[0].trim();
-    right = spl[1].trim();
+
+    if (spl.length != 2)
+    {
+        throw "Cross requires two arguments. " + str;
+    }
+    var left = spl[0].trim();
+    var right = spl[1].trim();
 
 
     var node = new Node(TypeEnum.Cross, "");
@@ -488,47 +544,63 @@ function createTree(q)
         }
         else
         {
-            //todo give error messages
-            return null;
+            throw "Project must have selected columns "
         }
     }
     else if (q.startsWith("\u03C3 ") || q.startsWith("sigma"))
     {
-        newq = q.substring(q.indexOf(" ") + 1);
-        return parseSelect(newq);
+        if (q.indexOf(" ") != -1)
+        {
+            newq = q.substring(q.indexOf(" ") + 1);
+            return parseSelect(newq);
+        }
+        else
+        {
+            throw "Select must have a condition"
+        }
     }
     else if (q.startsWith("\u03C1 ") || q.startsWith("rho"))
     {
-        newq = q.substring(q.indexOf(" ") + 1);
-        return parseRho(newq);
+        if (q.indexOf(" ") != -1)
+        {
+            newq = q.substring(q.indexOf(" ") + 1);
+            return parseRho(newq);
+        }
+        else
+        {
+            throw "Rename must have a new name"
+        }
     }
     else if (q.startsWith("\u2A1D") || q.startsWith("join"))
     {
-        //TODO add conditions.
-        newq = q.substring(q.indexOf(" "));
-        return parseJoin(newq);
+        if (q.indexOf(" ") != -1)
+        {
+            newq = q.substring(q.indexOf(" "));
+            return parseJoin(newq);
+        }
+        else 
+        {
+            throw "Natural Join currently not supported, join must have a join condition"
+        }
+        
     }
     else if (q.startsWith("\u222A") || q.startsWith("union"))
     {
-        //TODO add conditions.
         newq = q.substring(q.indexOf("(") + 1, q.lastIndexOf(")"));
         return parseUnion(newq);
     }
     else if (q.startsWith("\u2229") || q.startsWith("intersect"))
     {
-        //TODO add conditions.
         newq = q.substring(q.indexOf("(") + 1, q.lastIndexOf(")"));
         return parseIntersection(newq);
     }
     else if (q.startsWith("-") || q.startsWith("subtract"))
     {
-        //TODO add conditions.
         newq = q.substring(q.indexOf("(") + 1, q.lastIndexOf(")"));
         return parseSubtraction(newq);
     }
     else if (q.startsWith("\u2A2F") || q.startsWith("cross"))
     {
-        //TODO add conditions.
         newq = q.substring(q.indexOf("(") + 1, q.lastIndexOf(")"));
         return parseCross(newq);
     }
@@ -616,9 +688,6 @@ var TypeEnum = {"Pi":0, "Sigma":1, "Rho":2, "Join":3, "Data":4,
 
 function NodeToSQL(node, subqueries, alias, schema)
 {
-    // TODO HANDLE JOIN CORRECTLY
-    // TODO handle multiple selects.
-    // TODO handle sigma (pi (R))
     var query = "";
     if (node.type == TypeEnum.Pi)
     {
@@ -627,7 +696,8 @@ function NodeToSQL(node, subqueries, alias, schema)
         {
             query = select + subqueries[0];
         }
-        else if (node.children[0].children.length == 0 || node.children[0].type == TypeEnum.Cross || node.children[0].type == TypeEnum.Join)
+        else if (node.children[0].children.length == 0 || node.children[0].type == TypeEnum.Cross || node.children[0].type == TypeEnum.Join
+                    || node.children[0].type == TypeEnum.Intersect || node.children[0].type == TypeEnum.Union || node.children[0].type == TypeEnum.Subtraction)
         {
             query = select + "FROM " + subqueries[0];
         }
@@ -657,6 +727,11 @@ function NodeToSQL(node, subqueries, alias, schema)
                         break;
                     }
                 }
+            }
+            else if (node.children[0].type == TypeEnum.Pi)
+            {
+                subqueries[0] = "(" + subqueries[0] + ") as alias" + alias.toString();
+                alias++;
             }
             query = "FROM " + subqueries[0] + "\nWHERE " + conditions;
             if (node.parent == null || node.parent.type != TypeEnum.Pi)
@@ -731,7 +806,6 @@ function NodeToSQL(node, subqueries, alias, schema)
     }
     else if (node.type == TypeEnum.Join)
     {
-        //todo HANDLE CONDITION FROM ALIASES
         if (node.children[0].type != TypeEnum.Data)
         {
             subqueries[0] = "(" + subqueries[0] + ") AS alias" + alias.toString();
@@ -765,67 +839,27 @@ function NodeToSQL(node, subqueries, alias, schema)
         }
         
     }
-    //this... might be difficult. 
-    //as inconvenient as it may be, might have to restrict 
-    //this action on data that has not been operated on
-    //NEVERMIND TODO FIX THIS SHIT.
     else if (node.type == TypeEnum.Intersect)
     {
-        if (node.children[0].type == TypeEnum.Data && node.children[1].type == TypeEnum.Data)
+        if (node.children[0].type == TypeEnum.Data)
         {
-            var left = subqueries[0].replace(/\s/g,'') ;
-            var right = subqueries[1].replace(/\s/g,'');
-            var select = "SELECT DISTINCT ";
-            var from = "\nFROM " + left + " JOIN " + right;
-            var on = "\nON "
-            if (left.toLowerCase()!= right.toLowerCase())
-            {
-                for (i = 1; i < schema[left].length; i++)
-                {
-                    var column = schema[left][i][0];
-                    if (i == 1)
-                    {
-                        select = select + left + "." + column;
-                        on = on + left + "." + column + " = " + right + "." + column; 
-                    }
-                    else
-                    {
-                        select = select + ", " + left + "." + column;
-                        on = on + " AND " + left + "." + column + " = " + right + "." + column; 
-                    }
-                    
-                }
-            }
-            else 
-            {
-                
-                var aLeft = "alias" + alias.toString();
-                alias++;
-                var aRight = "alias" + alias.toString();
-                alias++;
-                from = "\nFROM " + left + " AS " + aLeft + " JOIN " + right + " AS " + aRight;
-                for (i = 1; i < schema[left].length; i++)
-                {
-                    var column = schema[left][i][0];
-                    if (i == 1)
-                    {
-                        select = select + aLeft  + "." + column;
-                        on = on + aLeft + "." + column + " = " + aRight + "." + column; 
-                    }
-                    else
-                    {
-                        select = select + ", " + aLeft + "." + column;
-                        on = on + " AND " +  aLeft + "." + column + " = " + aRight + "." + column; 
-                    }
-                }
-            }
-            query = select + from + on;
+            subqueries[0] = "SELECT DISTINCT *\nFROM " + subqueries[0];
+        }
+        if (node.children[1].type == TypeEnum.Data)
+        {
+            subqueries[1] = "SELECT DISTINCT *\nFROM " + subqueries[1];
+        }
+        if (node.parent != null)
+        {
+            query = "(" +  subqueries[0] + "\nINTERSECT\n" + subqueries[1] + ") AS alias" + alias.toString();
+            alias++;
+        }
+        else
+        {
+            query = subqueries[0] + "\nINTERSECT\n" + subqueries[1];
         }
         
     }
-    //this... might be difficult. 
-    //as inconvenient as it may be, might have to restrict 
-    //this action on data that has not been operated on
     else if (node.type == TypeEnum.Subtraction)
     {
         if (node.children[0].type == TypeEnum.Data)
@@ -838,23 +872,23 @@ function NodeToSQL(node, subqueries, alias, schema)
         }
         if (node.parent != null)
         {
-            query = "(" +  subqueries[0] + "\nUNION\n" + subqueries[1] + ") AS alias" + alias.toString();
+            query = "(" +  subqueries[0] + "\nEXCEPT\n" + subqueries[1] + ") AS alias" + alias.toString();
             alias++;
         }
         else
         {
-            query = subqueries[0] + "\nUNION\n" + subqueries[1];
+            query = subqueries[0] + "\nEXCEPT\n" + subqueries[1];
         }
         
     }
     else if (node.type == TypeEnum.Cross)
     {
-        if (node.children[0].type != TypeEnum.Data)
+        if (node.children[0].type != TypeEnum.Data && node.children[0].type != TypeEnum.Join)
         {
             subqueries[0] = "(" + subqueries[0] + ") as alias" + alias;
             alias++;
         }
-        if (node.children[1].type != TypeEnum.Data)
+        if (node.children[1].type != TypeEnum.Data && node.children[1].type != TypeEnum.Join)
         {
             subqueries[1] = "(" + subqueries[1] + ") as alias" + alias;
             alias++;
@@ -1664,7 +1698,7 @@ var b = TreeToSql(tree, "", 0, schema);
   $scope.optimizeQuery = function(){
     // TODO: Print the contents of the code mirror to the console to get handle to it
     console.log('Optimize query!');
-
+ 
     query = $scope.cmModelOptimize.string;
     var cind = query.indexOf("--")
     while (cind != -1)
@@ -1689,7 +1723,7 @@ var b = TreeToSql(tree, "", 0, schema);
     schema["person"] = [7, ["firstname", "string"], ["lastname", "string"], ["age", "int"], ["MID", "int"]];
     schema["languages"] = [3, ["most_proficient", "string"], ["ID", "int"]]
     var optTree = OptimizeTree(tree, schema);
-
+    var Ra = TreeToRA(tree, "", 0, schema);
     // Temporarily setting the results to <temp results>
     $scope.optimizedQueryString = "pi firstname, lastname (join id=mid(sigma firstname = 'Chris' (Person), sigma most_proficient = 'Python' (languages)))";
 

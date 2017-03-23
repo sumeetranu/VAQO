@@ -1734,7 +1734,7 @@ var b = TreeToSql(tree, "", 0, schema);
     var cind = query.indexOf("--")
     while (cind != -1)
     {
-        nlind = query.indexOf("\n");
+        nlind = query.indexOf("\n"); 
         if (nlind == -1)
         {
             query = query.replace(query.substring(cind), "");

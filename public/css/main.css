@@ -65,6 +65,9 @@ h1, h2, h3, h4, h5, h6 {
 /* Tabs */
 #workspaceTabs .tab-content {
   border : 1px solid #6F0000;
+  border-bottom: none;
+  border-left:none;
+  border-right:none;
   padding : 5px 15px;
 }
 

@@ -1792,7 +1792,7 @@ var b = TreeToSql(tree, "", 0, schema);
     schema["languages"] = [3, ["most_proficient", "string"], ["ID", "int"]]
     var optTree = OptimizeTree(tree, schema);
     var Ra = TreeToRA(tree, "", 0, schema);
-    console.log(RA);
+    console.log(Ra);
     // Temporarily setting the results to <temp results>
     $scope.optimizedQueryString = TreeToRA(optTree, "", 0, schema); 
 

@@ -232,6 +232,9 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
     Function: runQuery
     Description: Run the relational algebra query for the run tab
   */
+  $scope.runMessage = 'Run a query to view the results.';
+  $scope.runMessageError = false;
+
   $scope.runQuery = function(){
       console.log('Run query...');
 
@@ -252,17 +255,45 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
       var noReturns = sql.replace(/[^\x21-\x7E\u03C0\u03C1\u03C3\u2A1D\u222A\u2229\u2A2F\u27F5\u2227\u2228]+/g, ' ');
       noReturns = noReturns.replace(/^\s+|\s+$/g, '').trim();
       var data_in = {params:{queryString: sql}};
-      $http.get('/queryDatabase', data_in).then(function(data_out, status){
+      $http.get('/queryDatabase', data_in).then(function(data_out){
+          
           $scope.data_headers = data_out.data['dataColumns'];
           $scope.data_results = data_out.data['valueDictionary'];
+
+         if($scope.data_headers.length == 0 || $scope.data_results.length == 0){
+				$scope.runMessage = 'No data matches the entered query.';
+                $scope.showGraph = false;
+                $scope.showTree = true;
+                $scope.runMessageError = true;
+                return;
+		  } 
+
+          // TODO: Empty info say no results match the query
+          $scope.showGraph = true;
+          $scope.showTree = true;
+          $scope.runMessage = 'Run a query to view the results.';
+          $scope.runMessageError = false;
+          console.log(data_out);
           // $scope.messages = [{text:"123 text", val:data_out.data}, {text:"2 text", val:'45'}];
-      });
+      },
+      function(response){
+          $scope.runMessage = 'Error: ' + response.data.error.message;
+          console.log(response.data.error.message);
+          $scope.showGraph = false;
+          $scope.showTree = false;
+          $scope.runMessageError = true;
+      }
+      );
+
+
+
+      
 
       // Failed attempts at getting coremirror editor values:
      // console.log('Value:', $scope.cmModel.string);
 
       // Update graph results
-      $scope.showGraph = true;
+      
       
 
       console.log(sql);
@@ -1724,8 +1755,9 @@ var b = TreeToSql(tree, "", 0, schema);
     schema["languages"] = [3, ["most_proficient", "string"], ["ID", "int"]]
     var optTree = OptimizeTree(tree, schema);
     var Ra = TreeToRA(tree, "", 0, schema);
+    console.log(RA);
     // Temporarily setting the results to <temp results>
-    $scope.optimizedQueryString = "pi firstname, lastname (join id=mid(sigma firstname = 'Chris' (Person), sigma most_proficient = 'Python' (languages)))";
+    $scope.optimizedQueryString = TreeToRA(optTree, "", 0, schema); 
 
     // Update graph results
     $scope.showGraphs = true;
@@ -1784,7 +1816,7 @@ var b = TreeToSql(tree, "", 0, schema);
 
   $scope.cmModelConvertSql={string:'console.log(SQL);'};
   
-
+  $scope.convertedSqlString = 'Enter a relational algebra query above to convert to SQL.';
   $scope.convertToSql = function(){
     console.log('Convert to sql');
 
@@ -1804,10 +1836,13 @@ var b = TreeToSql(tree, "", 0, schema);
     var sql = out[0];
 
     console.log(sql);
-
+    $scope.convertedSqlString = sql;
+    console.log($scope.convertedSqlString);
     updateSqlEditor( $scope.cmModelConvertRa);
             
   }
+
+  $scope.convertedRelString = 'Enter a SQL query above to convert to Relational Algebra.';
 
   $scope.convertToRelAlg = function(){
     console.log('Convert to rel alg');
@@ -1821,6 +1856,7 @@ var b = TreeToSql(tree, "", 0, schema);
     var Ra = TreeToRA(tree, "", 0, schema);
 
     console.log(Ra);
+    $scope.convertedRelString = Ra;
     updateRelAlgEditor($scope.cmModelConvertRa);
 
   }

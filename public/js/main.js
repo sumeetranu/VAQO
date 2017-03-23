@@ -564,11 +564,40 @@ function parseCross(str)
 }
 
 
+function EqualParenthesis(q)
+{
+    var open = 0;
+    var close = 0;
+    var loc = -1
+    while ((loc = q.indexOf("(", loc + 1)) != -1)
+    {
+        open++;
+    }
+    var loc = -1
+    while ((loc = q.indexOf(")", loc + 1)) != -1)
+    {
+        close++;
+    }
+    if (open == close)
+    {
+        return;
+    }
+    else if (close > open)
+    {
+         throw "Too many closing parenthesis";
+    }
+    else
+    {
+        throw "Unclosed parenthesis"
+    }
+}
 function createTree(q)
 {
-    if (q.startsWith("\u03C0 ") || q.startsWith("pi"))
+    EqualParenthesis(q);
+    
+    if (q.startsWith("\u03C0") || q.startsWith("pi"))
     {
-        if (q.indexOf(" ") != -1)
+        if (q.substring(0,q.indexOf("(")).trim() != "pi" && q.substring(0,q.indexOf("(")).trim() != "\u03C0")
         {
             newq = q.substring(q.indexOf(" ") + 1);
             return parseProject(newq);
@@ -578,9 +607,9 @@ function createTree(q)
             throw "Project must have selected columns "
         }
     }
-    else if (q.startsWith("\u03C3 ") || q.startsWith("sigma"))
+    else if (q.startsWith("\u03C3") || q.startsWith("sigma"))
     {
-        if (q.indexOf(" ") != -1)
+        if (q.substring(0,q.indexOf("(")).trim() != "sigma" && q.substring(0,q.indexOf("(")).trim() != "\u03C3")
         {
             newq = q.substring(q.indexOf(" ") + 1);
             return parseSelect(newq);
@@ -590,9 +619,9 @@ function createTree(q)
             throw "Select must have a condition"
         }
     }
-    else if (q.startsWith("\u03C1 ") || q.startsWith("rho"))
+    else if (q.startsWith("\u03C1") || q.startsWith("rho"))
     {
-        if (q.indexOf(" ") != -1)
+        if (q.substring(0,q.indexOf("(")).trim() != "rho" && q.substring(0,q.indexOf("(")).trim() != "\u03C1")
         {
             newq = q.substring(q.indexOf(" ") + 1);
             return parseRho(newq);
@@ -604,7 +633,7 @@ function createTree(q)
     }
     else if (q.startsWith("\u2A1D") || q.startsWith("join"))
     {
-        if (q.indexOf(" ") != -1)
+        if (q.substring(0,q.indexOf("(")).trim() != "join" && q.substring(0,q.indexOf("(")).trim() != "\u2A1D")
         {
             newq = q.substring(q.indexOf(" "));
             return parseJoin(newq);
@@ -847,7 +876,15 @@ function NodeToSQL(node, subqueries, alias, schema)
             subqueries[1] = "(" + subqueries[1] + ") AS alias" + alias.toString();
             alias++;
         }
-        query = subqueries[0] + " INNER JOIN " + subqueries[1] + " ON " + node.value;
+        if (node.parent == null)
+        {
+            query = "SELECT DISTINCT *\nFROM " + subqueries[0] + " INNER JOIN " + subqueries[1] + " ON " + node.value;
+        }   
+        else
+        {
+            query = subqueries[0] + " INNER JOIN " + subqueries[1] + " ON " + node.value;
+        }
+       
     }
     else if (node.type == TypeEnum.Union)
     {
@@ -1798,6 +1835,14 @@ var b = TreeToSql(tree, "", 0, schema);
 
 
   // CONVERT TAB ###################################################################################################################################################
+  $scope.cmOptionConvertRa = {
+    lineNumbers:true,
+    indentWithTabs:true,
+    mode:'relationalAlgebra',
+    lineWrapping: true
+  }
+
+  $scope.cmModelConvertRa={string:'consolasdfdse.log();'};
   $scope.cmOptionConvertRa = {
     lineNumbers:true,
     indentWithTabs:true,

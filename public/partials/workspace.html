@@ -16,16 +16,16 @@
         <div id="workspaceTabs" class="col-lg-12" style="height:100%">
             <ul class="nav nav-pills">
                 <li class="active">
-                    <a data-target="#run" data-toggle="tab">Run</a>
+                    <a style="cursor:default" data-target="#run" data-toggle="tab"><i class="fa fa-lg fa-caret-right"></i> Run</a>
                 </li>
                 <li>
-                    <a data-target="#optimize" data-toggle="tab">Optimize</a>
+                    <a style="cursor:default" data-target="#optimize" data-toggle="tab"><i class="fa fa-lg fa-cogs"></i> Optimize</a>
                 </li>
                 <li>
-                    <a data-target="#convert" data-toggle="tab">Convert</a>
+                    <a style="cursor:default" data-target="#convert" data-toggle="tab"><i class="fa fa-lg fa-exchange"></i> Convert</a>
                 </li>
 
-                <li style="float:right"><button class="btn btn-red" ng-click="database()"><i class="fa fa-wrench">Database</i></button></li>
+                <li style="float:right"><button class="btn btn-red" ng-click="database()"><i class="fa fa-database"> Database</i></button></li>
             </ul>
 
             <div class="tab-content clearfix" style="height:70vh">
@@ -80,10 +80,12 @@
                     </div>
 
                     <div class="col-sm-6" style="height:100%">
-                        <!--<h4 style="text-align:center" class="red-text">Results</h4>-->
-                        <!--<p style="vertical-align:center">Run a query to see the results.</p>-->
-                        <p ng-if="!showGraph">Run a query to view results. </p>
-                        <div style = "width: 100%; height: 30%; overflow:auto;">
+                        <div ng-if="!showGraph" ng-class="{'errorClass' : runMessageError}" class="panel panel-blue">
+                            <div class="panel-body">
+                                <p ng-bind="runMessage"></p>
+                            </div>
+                        </div>
+                        <div ng-if="showGraph" style = "width: 100%; height: 30%; overflow:auto;">
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -105,7 +107,7 @@
                         <br>
 
                         <!-- Visjs graph - graph connection here, but data and options can be modified in the run directive -->
-                        <div ng-show="showGraph" id="mynetwork" style="height:63% !important;"></div>
+                        <div ng-show="showTree" id="mynetwork" class="runGraph"></div>
                         <script type="text/javascript">
                             var container = document.getElementById('mynetwork');
                         </script>  
@@ -198,7 +200,6 @@
                     <strong><center>Relational Algebra</center></strong>
                     <br>
                     <div class = "toolbar">
-                        <span class="btn btn-compact">π</span>
                             <span class="btn btn-compact" title="pi">π</span>
                             <span class="btn btn-compact" title="sigma">σ</span>
                             <span class="btn btn-compact" title="rho">ρ</span>
@@ -230,8 +231,13 @@
                         
                     </div>
                     <br>
-                    <div style="text-align:right"><button class="btn btn-red" ng-click="convertToSql()">Convert to SQL</button></div>
+                    <div style="text-align:center"><button class="btn btn-red" ng-click="convertToSql()">Convert to SQL</button></div>
                     <br>
+                    <div class="panel panel-default panel-blue">
+                        <div class="panel-body">
+                            <p ng-bind="convertedSqlString"></p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- SQL Box ########################################################### -->    
@@ -240,7 +246,6 @@
                     <strong><center>SQL</center></strong>
                     <br>
                     <div class = "toolbar">
-                        <span class="btn btn-compact">π</span>
                             <span class="btn btn-compact" title="pi">π</span>
                             <span class="btn btn-compact" title="sigma">σ</span>
                             <span class="btn btn-compact" title="rho">ρ</span>
@@ -271,8 +276,13 @@
                     </div>
 
                     <br>
-                    <div style="text-align:right"><button class="btn btn-red" ng-click="convertToRelAlg()">Convert to Relational Algebra</button></div>
+                    <div style="text-align:center"><button class="btn btn-red" ng-click="convertToRelAlg()">Convert to Relational Algebra</button></div>
                     <br>
+                    <div class="panel panel-default panel-blue">
+                        <div class="panel-body">
+                            <p ng-bind="convertedRelString"></p>
+                        </div>
+                    </div>
                 </div>
 
                 </div>

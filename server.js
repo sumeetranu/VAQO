@@ -47,7 +47,14 @@ app.get('/queryDatabase', function(req, res){
 
 		request = new Request(statement, function(err, rowCount) {  
 			if (err) {  
-				console.log('Error: ' + err);
+				var tempErr = {};
+				tempErr["QueryError!!!"] = String(err.message);
+				dataDictionary.push(tempErr);
+				dataResults["dataColumns"] += "QueryError!!!";
+				dataResults["dataColumns"] = dataResults["dataColumns"].split(" ");
+				dataResults["dataColumns"] = dataResults["dataColumns"].filter(Boolean);
+				dataResults["valueDictionary"] = dataDictionary;
+				res.send(dataResults);
 			} else {
 				//Add query result and column names to json object.
 				//Remove extra spaces in column names and remove empty column nodes created by split.

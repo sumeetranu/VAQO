@@ -309,10 +309,29 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
 
   //var container = angular.element(document.getElementById('mynetwork'));
   var network = new vis.Network(container, $scope.runData, $scope.options);
-
+  $scope.schema_data = [];
   $scope.database = function(){
     $http.get('/getDBSchema',"").then(function(data_out){
-      console.log(data_out.data);
+        console.log(data_out.data);
+        $scope.schema_data = [];
+
+        var i = 0;
+        for(var tableName in data_out.data){
+            var tmp = {};
+            tmp.tableName = tableName;
+            tmp.tableId = i;
+            i = i+1;
+            tmp.tableColumns = [];
+                    
+            data_out.data[tableName].forEach(function(element){
+                tmp.tableColumns.push({
+                    COLUMN_NAME: element.COLUMN_NAME,
+                    DATA_TYPE: element.DATA_TYPE
+                });
+            });
+
+            $scope.schema_data.push(tmp);
+        }
     })};
   
 

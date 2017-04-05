@@ -169,7 +169,6 @@ app.get('/getDBSchema', function(req,res,next){
 
 app.get('/getDBSchema', function(req,res) {
 	setTimeout(function() {
-		console.log(res.myTables);
 		res.send(res.myTables);
 	}, 1000);
 });

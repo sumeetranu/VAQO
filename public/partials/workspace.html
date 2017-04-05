@@ -25,8 +25,29 @@
                     <a style="cursor:default" data-target="#convert" data-toggle="tab"><i class="fa fa-lg fa-exchange"></i> Convert</a>
                 </li>
 
-                <li style="float:right"><button class="btn btn-red" ng-click="database()"><i class="fa fa-database"> Database</i></button></li>
+                <li style="float:right"><button class="btn btn-red btn-info" data-toggle="modal" data-target="#myModal" ng-click="database()"><i class="fa fa-database"> Database</i></button></li>
             </ul>
+
+            <!-- Modal -->
+            <div id="myModal" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Table Schema</h4>
+                  </div>
+                  <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
 
             <div class="tab-content clearfix" style="height:70vh">
                 <!-- ########################################################### RUN TAB ########################################################### -->

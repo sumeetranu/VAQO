@@ -310,7 +310,10 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
   //var container = angular.element(document.getElementById('mynetwork'));
   var network = new vis.Network(container, $scope.runData, $scope.options);
 
-
+  $scope.database = function(){
+    $http.get('/getDBSchema',"").then(function(data_out){
+      console.log(data_out.data);
+    })};
   
 
 var TypeEnum = {"Pi":0, "Sigma":1, "Rho":2, "Join":3, "Data":4,

@@ -59,7 +59,7 @@ app.controller('ConnectDbCtrl', function ($scope/*, $location, $http */) {
 app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, $http */) {
   $scope.database = function(){
     console.log('Database popup...');
-
+    
     // TODO: Add code that pops up a database view that lets users see the test database
     //       If custom database selected, take back to connect database page to be able to edit the connnection
     //       (maybe make the text read "Database Connection") when connected to a custom database?
@@ -311,6 +311,7 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
   var network = new vis.Network(container, $scope.runData, $scope.options);
   $scope.schema_data = [];
   $scope.database = function(){
+      $scope.loadingSchema = true;
     $http.get('/getDBSchema',"").then(function(data_out){
         console.log(data_out.data);
         $scope.schema_data = [];
@@ -331,6 +332,7 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
             });
 
             $scope.schema_data.push(tmp);
+            $scope.loadingSchema = false;
         }
     })};
   

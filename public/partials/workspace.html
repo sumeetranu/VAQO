@@ -39,9 +39,17 @@
                     <h4 class="modal-title">Table Schema</h4>
                   </div>
                   <div class="modal-body" style="max-height: 70vh; overflow-y:scroll;">
-                      <p>Click on a Table name to toggle its schema.</p>
+                      <div ng-if="loadingSchema">
+                            <center>
+                                <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i> 
+                                <p>Loading schema...</p>
+                            </center>
+                      </div>
+
+                      <div ng-if="!loadingSchema">
+                            <p>Click on a Table name to toggle its schema.</p>
                       <!-- TODO: Add toggle arrows, add loading symbol -->
-                    <div ng-repeat = "table in schema_data">
+                       <div ng-repeat = "table in schema_data">
                         <h4 class="toggle-heading" data-toggle="collapse" data-target="#{{table.tableId}}" ng-click="theading{{table.tableId}}=!theading{{table.tableId}}">
                             <!--<i class="fa" ng-class="(theading{{table.tableId}}) ? 'fa-caret-down': 'fa-caret-right'"></i>-->
                             {{table.tableName}}
@@ -63,6 +71,9 @@
                                 </table>
                         </div>
                     </div>
+                      </div>
+
+                      
                     
                   </div>
                   <div class="modal-footer">

@@ -3,6 +3,7 @@ var app = express();
 var port = process.env.port || 1337
 var tedious = require('tedious');
 var ConnectionPool = require('tedious-connection-pool');
+var config = require('./config');
 
 /*app.get('/', function(req, res){
 	res.send("Hello " + req.query.name + " from server.js!");
@@ -20,10 +21,10 @@ console.log('Server running on port', port);
 // Connect to the Database
 // TODO: Maybe need to close the database too? Need to investigate.
 var config = {
-	userName: process.env.USER_NAME,
-	password: process.env.PASSWORD,
-	server: process.env.SERVER,
-	options:{encrypt:true, database:process.env.DATABASE}
+	userName: process.env.USER_NAME || config.database.userName,
+	password: process.env.PASSWORD || config.database.password,
+	server: process.env.SERVER || config.database.server,
+	options:{encrypt:true, database:process.env.DATABASE || config.database.database}
 };
 
 var pool = new ConnectionPool({max: 10, log:true},config);

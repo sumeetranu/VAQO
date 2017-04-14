@@ -20,10 +20,10 @@ console.log('Server running on port', port);
 // Connect to the Database
 // TODO: Maybe need to close the database too? Need to investigate.
 var config = {
-	userName: 'vaqo',
-	password:'cbdnsr17!',
-	server:'vaqosql.database.windows.net',
-	options:{encrypt:true, database:'TestDB'}
+	userName: process.env.USER_NAME,
+	password: process.env.PASSWORD,
+	server: process.env.SERVER,
+	options:{encrypt:true, database:process.env.DATABASE}
 };
 
 var pool = new ConnectionPool({max: 10, log:true},config);

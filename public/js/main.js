@@ -71,7 +71,7 @@ app.controller('WorkspaceCtrl', function ($scope, $http, $timeout/*, $location, 
   // RA Mode from ReLax
   CodeMirror.defineMode('relationalAlgebra', function () {
         var keywords = [
-            'pi', 'sigma', 'rho', 'tau', '<-', '->', 'intersect', 'union', 'except', '/', '-', '\\\\', 'x', 'cross join', 'join',
+            'pi', 'sigma', 'rho', 'tau', '<-', '->', 'intersect', 'union', 'except', '/', '-', '\\\\', 'x', 'cross', 'join',
             'inner join', 'natural join', 'left join', 'right join', 'left outer join', 'right outer join',
             'left semi join', 'right semi join', 'anti join', 'anti semi join', 'and', 'or', 'xor'
         ];
@@ -1779,9 +1779,9 @@ var b = TreeToSql(tree, "", 0, schema);
     lineWrapping: true
   }
 
-  $scope.cmModelOptimize={string:'consoleee.log();'};
+  $scope.cmModelOptimize={string:''};
 
-  $scope.optimizedQueryString = "Optimized query will go here...";
+  $scope.optimizedQueryString = "Optimize a query to view the results.";
   $scope.showGraphs = false;
 
   /* Function triggered when "Optimize" button is clicked */

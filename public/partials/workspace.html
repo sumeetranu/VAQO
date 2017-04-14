@@ -204,30 +204,25 @@
                     </div>
 
                     <div class="col-sm-6" style="height:100%">
-
-
-                        
-
-                        <h4 style="text-align:center" class="red-text">Results</h4>
-                        
-                            <!--<p style="vertical-align:center">Run a query to see the results.</p>-->
-
                             <strong>Optimized query</strong>
-                            <p ng-bind="optimizedQueryString"></p>
-
+                            <div class="panel panel-blue">
+                                <div class="panel-body">
+                                    <p ng-bind="optimizedQueryString"></p>
+                                </div>
+                            </div>
                             <br>
 
-                            <div style="height:75%; width:50%; float:left;">
+                            <div ng-show="showGraphs" style="height:75%; width:50%; float:left;">
                                 <strong>Original tree</strong>
-                                <div ng-show="showGraphs" id="originalNetwork" style="height:100% !important"></div>
+                                <div id="originalNetwork" style="height:100% !important"></div>
                                 <script type="text/javascript">
                                     var originalContainer = document.getElementById('originalNetwork');
                                 </script>
                             </div>
 
-                            <div style="height:75%; width:50%; float:right;">
+                            <div ng-show="showGraphs" style="height:75%; width:50%; float:right;">
                                 <strong>Optimized tree</strong>
-                                <div ng-show="showGraphs" id="optimizedNetwork" style="height:100% !important"></div>
+                                <div id="optimizedNetwork" style="height:100% !important"></div>
                                 <script type="text/javascript">
                                     var optimizedContainer = document.getElementById('optimizedNetwork');
                                 </script>

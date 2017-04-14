@@ -3,11 +3,13 @@ var app = express();
 var port = process.env.port || 1337
 var tedious = require('tedious');
 var ConnectionPool = require('tedious-connection-pool');
-var config = require('./config');
 
-/*app.get('/', function(req, res){
-	res.send("Hello " + req.query.name + " from server.js!");
-});*/
+// Only import config.js if running on azure (if statement below)
+if (process.env.WEBSITE_NODE_DEFAULT_VERSION) {
+    var config = [];
+} else {
+	var config = require('./config');
+}
 
 app.use(express.static(__dirname + "/public"));
 

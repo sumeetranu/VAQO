@@ -1940,6 +1940,9 @@ var b = TreeToSql(tree, "", 0, schema);
     console.log('Updating SQL editor with: ', query);
   }
 
+  $('.tooltip').tooltip({
+    selector: "a[data-toggle=tooltip]"
+  });
 
 });
 

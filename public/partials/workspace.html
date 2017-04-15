@@ -25,11 +25,11 @@
                     <a style="cursor:default" data-target="#convert" data-toggle="tab"><i class="fa fa-lg fa-exchange"></i> Convert</a>
                 </li>
 
-                <li style="float:right"><button class="btn btn-red btn-info" data-toggle="modal" data-target="#myModal" ng-click="database()"><i class="fa fa-database"> Database</i></button></li>
+                <li style="float:right"><button class="btn btn-red btn-info" data-toggle="modal" data-target="#schemaModal" ng-click="database()"><i class="fa fa-database"> Database</i></button></li>
             </ul>
 
             <!-- Modal -->
-            <div id="myModal" class="modal fade" role="dialog">
+            <div id="schemaModal" class="modal fade" role="dialog">
               <div class="modal-dialog">
 
                 <!-- Modal content-->
@@ -84,6 +84,12 @@
               </div>
             </div>
 
+            <script>
+            $(document).ready(function(){
+                $('[data-toggle="tooltip"]').tooltip({container: 'body', html: true});   
+            });
+            </script>
+
             <div class="tab-content clearfix" style="height:70vh">
                 <!-- ########################################################### RUN TAB ########################################################### -->
                 <div class="tab-pane active" id="run">
@@ -91,25 +97,56 @@
                     <div class="col-sm-6" style="padding-left:0px;"> 
 
                         <div class = "toolbar">
-                            <span class="btn btn-compact" title="pi">π</span>
-                            <span class="btn btn-compact" title="sigma">σ</span>
-                            <span class="btn btn-compact" title="rho">ρ</span>
-                            <span class="btn btn-compact" title="none">←</span>
-                            <span class="btn btn-compact" title="and">∧</span>
-                            <span class="btn btn-compact" title="or">∨</span>
-                            <span class="btn btn-compact" title="not">¬</span>
-                            <span class="btn btn-compact" title="equals">=</span>
-                            <span class="btn btn-compact" title="not equals">≠</span>
-                            <span class="btn btn-compact" title="greater or equals">≥</span>
-                            <span class="btn btn-compact" title="lesser or equals">≤</span>
-                            <span class="btn btn-compact" title="intersect">∩</span>
-                            <span class="btn btn-compact" title="union">∪</span>
-                            <span class="btn btn-compact" title="subtraction">-</span>
-                            <span class="btn btn-compact" title="cross join">⨯</span>
-                            <span class="btn btn-compact" title="natural join">⨝</span>
-                            <span class="btn btn-compact" title="assignment">=</span>
-                            <span class="btn btn-compact" title="single-line comment">--</span>
+                            <span class="btn-compact" href="#" data-toggle="tooltip" title="<bold>Phrase:    </bold> pi <br /><bold>Function: </bold> projection ">π</span>
+                            <span class="btn-compact" href="#" data-toggle="tooltip" title="<bold>Phrase:    </bold> sigma <br /><bold>Function: </bold> TODO ">σ</span>
+                            <span class="btn-compact" href="#" data-toggle="tooltip" title="<bold>Phrase:    </bold> rho <br /><bold>Function: </bold> TODO ">ρ</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> TODO <br /><bold>Function: </bold> TODO ">←</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> and <br /><bold>Function: </bold> TODO ">∧</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> or <br /><bold>Function: </bold> TODO ">∨</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> not <br /><bold>Function: </bold> TODO ">¬</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> equals <br /><bold>Function: </bold> TODO ">=</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> not equals <br /><bold>Function: </bold> TODO ">≠</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> TODO <br /><bold>Function: </bold> TODO ">≥</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> TODO <br /><bold>Function: </bold> TODO ">≤</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> intersect <br /><bold>Function: </bold> TODO ">∩</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> union <br /><bold>Function: </bold> TODO ">∪</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> TODO <br /><bold>Function: </bold> TODO ">-</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> cross join <br /><bold>Function: </bold> TODO ">⨯</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> natural join <br /><bold>Function: </bold> TODO ">⨝</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> TODO <br /><bold>Function: </bold> TODO ">=</span>
+                            <span class="btn-compact"></span>
+                            <span class="btn-compact"></span>
+                            <span class="btn-compact"></span>
+                            <span class="btn-compact"></span>
+                            <span class="btn btn-compact" data-toggle="modal" data-target="#editorHelpModal">
+                                <i class="fa fa-question-circle"></i>
+                            </span>
                         </div>
+
+                        <!-- RUN Editor Help Modal -->
+                        <div id="editorHelpModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Editor Help</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Here are some tips for using this editor:</p>
+                                        <ul>
+                                            <li>This editor will highlight relational algebra syntax.</li>
+                                            <li>You can copy and paste the symbols in the toolbar into the editor. E.g., "π" for a projection.</li>
+                                            <li>You can also hover over a symbol to see its corresponding phrase and type that in the editor. E.g., "pi" for "π".</li>
+                                        </ul>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class = "box">
                             <!-- CodeMirror -->
                             <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.22.0/codemirror.js"></script>
@@ -126,7 +163,7 @@
                             <!--<textarea placeholder="[Enter relational algebra queryy]" class="codearea" id="raCodearea" ng-model="run.raCodeArea" style="width:100%; height:100%; display:none"></textarea>-->
                             <!--<textarea ui-codemirror="run.editorHTML" id="run.editorHTML" ng-model="run.codeHTML"></textarea>-->
                             
-                            <textarea ui-codemirror="cmOption" ng-model="cmModel.string" id="raCodearea" class="codearea" ui-refresh='refreshCodemirror' style="width:100%; height:100%; display:none"></textarea>
+                            <textarea ui-codemirror="cmOption" ng-model="cmModel.string" id="raCodearea" class="codearea" style="width:100%; height:100%; display:none"></textarea>
                             <!--<p ng-bind="cmModel.string"></p>-->
 
                         </div>

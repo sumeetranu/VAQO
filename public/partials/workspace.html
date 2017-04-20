@@ -97,34 +97,34 @@
                     <div class="col-sm-6" style="padding-left:0px;"> 
 
                         <div class = "toolbar">
-                            <span class="btn-compact" href="#" data-toggle="tooltip" title="<bold>Phrase:    </bold> pi <br /><bold>Function: </bold> projection ">π</span>
-                            <span class="btn-compact" href="#" data-toggle="tooltip" title="<bold>Phrase:    </bold> sigma <br /><bold>Function: </bold> TODO ">σ</span>
-                            <span class="btn-compact" href="#" data-toggle="tooltip" title="<bold>Phrase:    </bold> rho <br /><bold>Function: </bold> TODO ">ρ</span>
-                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> TODO <br /><bold>Function: </bold> TODO ">←</span>
-                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> and <br /><bold>Function: </bold> TODO ">∧</span>
-                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> or <br /><bold>Function: </bold> TODO ">∨</span>
-                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> not <br /><bold>Function: </bold> TODO ">¬</span>
-                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> equals <br /><bold>Function: </bold> TODO ">=</span>
-                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> not equals <br /><bold>Function: </bold> TODO ">≠</span>
-                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> TODO <br /><bold>Function: </bold> TODO ">≥</span>
-                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> TODO <br /><bold>Function: </bold> TODO ">≤</span>
-                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> intersect <br /><bold>Function: </bold> TODO ">∩</span>
-                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> union <br /><bold>Function: </bold> TODO ">∪</span>
-                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> TODO <br /><bold>Function: </bold> TODO ">-</span>
-                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> cross join <br /><bold>Function: </bold> TODO ">⨯</span>
-                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> natural join <br /><bold>Function: </bold> TODO ">⨝</span>
-                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> TODO <br /><bold>Function: </bold> TODO ">=</span>
+                            <span class="btn-compact" href="#" data-toggle="tooltip" title="<bold>Phrase:    </bold> pi <br /><bold>Function: </bold> project ">π</span>
+                            <span class="btn-compact" href="#" data-toggle="tooltip" title="<bold>Phrase:    </bold> sigma <br /><bold>Function: </bold> sigma ">σ</span>
+                            <span class="btn-compact" href="#" data-toggle="tooltip" title="<bold>Phrase:    </bold> rho <br /><bold>Function: </bold> rename ">ρ</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> ← <br /><bold>Function: </bold> assign ">←</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> and <br /><bold>Function: </bold> and ">∧</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> or <br /><bold>Function: </bold> or ">∨</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> not <br /><bold>Function: </bold> not ">¬</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> = <br /><bold>Function: </bold> comparison equals ">=</span>
+                            <!-- The ones that are commented out have not been implemented -->
+                            <!--<span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> not needed <br /><bold>Function: </bold> comparison equals ">≠</span>-->                            
+                            <!--<span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> TODO <br /><bold>Function: </bold> TODO ">≥</span>-->
+                            <!--<span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> TODO <br /><bold>Function: </bold> TODO ">≤</span>-->
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> intersect <br /><bold>Function: </bold> set intersection ">∩</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> union <br /><bold>Function: </bold> set union ">∪</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> subtract <br /><bold>Function: </bold> set minus ">-</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> cross <br /><bold>Function: </bold> set cross product ">⨯</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> join <br /><bold>Function: </bold> join ">⨝</span>
                             <span class="btn-compact"></span>
                             <span class="btn-compact"></span>
                             <span class="btn-compact"></span>
                             <span class="btn-compact"></span>
-                            <span class="btn btn-compact" data-toggle="modal" data-target="#editorHelpModal">
+                            <span class="btn btn-compact" data-toggle="modal" data-target="#editorHelpModalRun">
                                 <i class="fa fa-question-circle"></i>
                             </span>
                         </div>
 
                         <!-- RUN Editor Help Modal -->
-                        <div id="editorHelpModal" class="modal fade" role="dialog">
+                        <div id="editorHelpModalRun" class="modal fade" role="dialog">
                             <div class="modal-dialog">
                                 <!-- Modal content-->
                                 <div class="modal-content">
@@ -211,25 +211,56 @@
                 <div class="tab-pane" id="optimize">
                     <div class="col-sm-6" style="padding-left:0px;"> 
                         <div class = "toolbar">
-                            <span class="btn btn-compact" title="pi">π</span>
-                            <span class="btn btn-compact" title="sigma">σ</span>
-                            <span class="btn btn-compact" title="rho">ρ</span>
-                            <span class="btn btn-compact" title="none">←</span>
-                            <span class="btn btn-compact" title="and">∧</span>
-                            <span class="btn btn-compact" title="or">∨</span>
-                            <span class="btn btn-compact" title="not">¬</span>
-                            <span class="btn btn-compact" title="equals">=</span>
-                            <span class="btn btn-compact" title="not equals">≠</span>
-                            <span class="btn btn-compact" title="greater or equals">≥</span>
-                            <span class="btn btn-compact" title="lesser or equals">≤</span>
-                            <span class="btn btn-compact" title="intersect">∩</span>
-                            <span class="btn btn-compact" title="union">∪</span>
-                            <span class="btn btn-compact" title="subtraction">-</span>
-                            <span class="btn btn-compact" title="cross join">⨯</span>
-                            <span class="btn btn-compact" title="natural join">⨝</span>
-                            <span class="btn btn-compact" title="assignment">=</span>
-                            <span class="btn btn-compact" title="single-line comment">--</span>
+                            <span class="btn-compact" href="#" data-toggle="tooltip" title="<bold>Phrase:    </bold> pi <br /><bold>Function: </bold> project ">π</span>
+                            <span class="btn-compact" href="#" data-toggle="tooltip" title="<bold>Phrase:    </bold> sigma <br /><bold>Function: </bold> sigma ">σ</span>
+                            <span class="btn-compact" href="#" data-toggle="tooltip" title="<bold>Phrase:    </bold> rho <br /><bold>Function: </bold> rename ">ρ</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> ← <br /><bold>Function: </bold> assign ">←</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> and <br /><bold>Function: </bold> and ">∧</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> or <br /><bold>Function: </bold> or ">∨</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> not <br /><bold>Function: </bold> not ">¬</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> = <br /><bold>Function: </bold> comparison equals ">=</span>
+                            <!-- The ones that are commented out have not been implemented -->
+                            <!--<span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> not needed <br /><bold>Function: </bold> comparison equals ">≠</span>-->                            
+                            <!--<span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> TODO <br /><bold>Function: </bold> TODO ">≥</span>-->
+                            <!--<span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> TODO <br /><bold>Function: </bold> TODO ">≤</span>-->
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> intersect <br /><bold>Function: </bold> set intersection ">∩</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> union <br /><bold>Function: </bold> set union ">∪</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> subtract <br /><bold>Function: </bold> set minus ">-</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> cross <br /><bold>Function: </bold> set cross product ">⨯</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> join <br /><bold>Function: </bold> join ">⨝</span>
+                            <span class="btn-compact"></span>
+                            <span class="btn-compact"></span>
+                            <span class="btn-compact"></span>
+                            <span class="btn-compact"></span>
+                            <span class="btn btn-compact" data-toggle="modal" data-target="#editorHelpModalOptimize">
+                                <i class="fa fa-question-circle"></i>
+                            </span>
                         </div>
+
+                        <!-- RUN Editor Help Modal -->
+                        <div id="editorHelpModalOptimize" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Editor Help</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Here are some tips for using this editor:</p>
+                                        <ul>
+                                            <li>This editor will highlight relational algebra syntax.</li>
+                                            <li>You can copy and paste the symbols in the toolbar into the editor. E.g., "π" for a projection.</li>
+                                            <li>You can also hover over a symbol to see its corresponding phrase and type that in the editor. E.g., "pi" for "π".</li>
+                                        </ul>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         
 
                         <div class = "box">
@@ -288,25 +319,56 @@
                     <strong><center>Relational Algebra</center></strong>
                     <br>
                     <div class = "toolbar">
-                            <span class="btn btn-compact" title="pi">π</span>
-                            <span class="btn btn-compact" title="sigma">σ</span>
-                            <span class="btn btn-compact" title="rho">ρ</span>
-                            <span class="btn btn-compact" title="none">←</span>
-                            <span class="btn btn-compact" title="and">∧</span>
-                            <span class="btn btn-compact" title="or">∨</span>
-                            <span class="btn btn-compact" title="not">¬</span>
-                            <span class="btn btn-compact" title="equals">=</span>
-                            <span class="btn btn-compact" title="not equals">≠</span>
-                            <span class="btn btn-compact" title="greater or equals">≥</span>
-                            <span class="btn btn-compact" title="lesser or equals">≤</span>
-                            <span class="btn btn-compact" title="intersect">∩</span>
-                            <span class="btn btn-compact" title="union">∪</span>
-                            <span class="btn btn-compact" title="subtraction">-</span>
-                            <span class="btn btn-compact" title="cross join">⨯</span>
-                            <span class="btn btn-compact" title="natural join">⨝</span>
-                            <span class="btn btn-compact" title="assignment">=</span>
-                            <span class="btn btn-compact" title="single-line comment">--</span>
-                    </div>
+                            <span class="btn-compact" href="#" data-toggle="tooltip" title="<bold>Phrase:    </bold> pi <br /><bold>Function: </bold> project ">π</span>
+                            <span class="btn-compact" href="#" data-toggle="tooltip" title="<bold>Phrase:    </bold> sigma <br /><bold>Function: </bold> sigma ">σ</span>
+                            <span class="btn-compact" href="#" data-toggle="tooltip" title="<bold>Phrase:    </bold> rho <br /><bold>Function: </bold> rename ">ρ</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> ← <br /><bold>Function: </bold> assign ">←</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> and <br /><bold>Function: </bold> and ">∧</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> or <br /><bold>Function: </bold> or ">∨</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> not <br /><bold>Function: </bold> not ">¬</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> = <br /><bold>Function: </bold> comparison equals ">=</span>
+                            <!-- The ones that are commented out have not been implemented -->
+                            <!--<span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> not needed <br /><bold>Function: </bold> comparison equals ">≠</span>-->                            
+                            <!--<span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> TODO <br /><bold>Function: </bold> TODO ">≥</span>-->
+                            <!--<span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> TODO <br /><bold>Function: </bold> TODO ">≤</span>-->
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> intersect <br /><bold>Function: </bold> set intersection ">∩</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> union <br /><bold>Function: </bold> set union ">∪</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> subtract <br /><bold>Function: </bold> set minus ">-</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> cross <br /><bold>Function: </bold> set cross product ">⨯</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> join <br /><bold>Function: </bold> join ">⨝</span>
+                            <span class="btn-compact"></span>
+                            <span class="btn-compact"></span>
+                            <span class="btn-compact"></span>
+                            <span class="btn-compact"></span>
+                            <span class="btn btn-compact" data-toggle="modal" data-target="#editorHelpModalConvert1">
+                                <i class="fa fa-question-circle"></i>
+                            </span>
+                        </div>
+
+                        <!-- RUN Editor Help Modal -->
+                        <div id="editorHelpModalConvert1" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Editor Help</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Here are some tips for using this editor:</p>
+                                        <ul>
+                                            <li>This editor will highlight relational algebra syntax.</li>
+                                            <li>You can copy and paste the symbols in the toolbar into the editor. E.g., "π" for a projection.</li>
+                                            <li>You can also hover over a symbol to see its corresponding phrase and type that in the editor. E.g., "pi" for "π".</li>
+                                        </ul>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     
 
                     <div class = "box">
@@ -334,25 +396,56 @@
                     <strong><center>SQL</center></strong>
                     <br>
                     <div class = "toolbar">
-                            <span class="btn btn-compact" title="pi">π</span>
-                            <span class="btn btn-compact" title="sigma">σ</span>
-                            <span class="btn btn-compact" title="rho">ρ</span>
-                            <span class="btn btn-compact" title="none">←</span>
-                            <span class="btn btn-compact" title="and">∧</span>
-                            <span class="btn btn-compact" title="or">∨</span>
-                            <span class="btn btn-compact" title="not">¬</span>
-                            <span class="btn btn-compact" title="equals">=</span>
-                            <span class="btn btn-compact" title="not equals">≠</span>
-                            <span class="btn btn-compact" title="greater or equals">≥</span>
-                            <span class="btn btn-compact" title="lesser or equals">≤</span>
-                            <span class="btn btn-compact" title="intersect">∩</span>
-                            <span class="btn btn-compact" title="union">∪</span>
-                            <span class="btn btn-compact" title="subtraction">-</span>
-                            <span class="btn btn-compact" title="cross join">⨯</span>
-                            <span class="btn btn-compact" title="natural join">⨝</span>
-                            <span class="btn btn-compact" title="assignment">=</span>
-                            <span class="btn btn-compact" title="single-line comment">--</span>
-                    </div>
+                            <span class="btn-compact" href="#" data-toggle="tooltip" title="<bold>Phrase:    </bold> pi <br /><bold>Function: </bold> project ">π</span>
+                            <span class="btn-compact" href="#" data-toggle="tooltip" title="<bold>Phrase:    </bold> sigma <br /><bold>Function: </bold> sigma ">σ</span>
+                            <span class="btn-compact" href="#" data-toggle="tooltip" title="<bold>Phrase:    </bold> rho <br /><bold>Function: </bold> rename ">ρ</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> ← <br /><bold>Function: </bold> assign ">←</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> and <br /><bold>Function: </bold> and ">∧</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> or <br /><bold>Function: </bold> or ">∨</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> not <br /><bold>Function: </bold> not ">¬</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> = <br /><bold>Function: </bold> comparison equals ">=</span>
+                            <!-- The ones that are commented out have not been implemented -->
+                            <!--<span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> not needed <br /><bold>Function: </bold> comparison equals ">≠</span>-->                            
+                            <!--<span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> TODO <br /><bold>Function: </bold> TODO ">≥</span>-->
+                            <!--<span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> TODO <br /><bold>Function: </bold> TODO ">≤</span>-->
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> intersect <br /><bold>Function: </bold> set intersection ">∩</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> union <br /><bold>Function: </bold> set union ">∪</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> subtract <br /><bold>Function: </bold> set minus ">-</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> cross <br /><bold>Function: </bold> set cross product ">⨯</span>
+                            <span class="btn-compact" data-toggle="tooltip" title="<bold>Phrase:    </bold> join <br /><bold>Function: </bold> join ">⨝</span>
+                            <span class="btn-compact"></span>
+                            <span class="btn-compact"></span>
+                            <span class="btn-compact"></span>
+                            <span class="btn-compact"></span>
+                            <span class="btn btn-compact" data-toggle="modal" data-target="#editorHelpModalConvert2">
+                                <i class="fa fa-question-circle"></i>
+                            </span>
+                        </div>
+
+                        <!-- RUN Editor Help Modal -->
+                        <div id="editorHelpModalConvert2" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Editor Help</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Here are some tips for using this editor:</p>
+                                        <ul>
+                                            <li>This editor will highlight relational algebra syntax.</li>
+                                            <li>You can copy and paste the symbols in the toolbar into the editor. E.g., "π" for a projection.</li>
+                                            <li>You can also hover over a symbol to see its corresponding phrase and type that in the editor. E.g., "pi" for "π".</li>
+                                        </ul>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     
                     <div class = "box">
                         <!-- CodeMirror -->
